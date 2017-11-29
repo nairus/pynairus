@@ -43,7 +43,7 @@ def generate_random(start, end, operator):
     return (first_number, second_number, operator)
 
 
-def main(start, end, max_range, operator):
+def pymath(start, end, max_range, operator, timer):
     """
     Fonction principale.
         :param start:     Borne de début.
@@ -55,6 +55,10 @@ def main(start, end, max_range, operator):
         :type max_range:  int
         :type operator:   str
     """
+    if timer is True:
+        # Initialisation du temps total de réponse.
+        total_time = 0
+
     if operator is None:
         operators = ("+", "-")
     else:
@@ -74,7 +78,15 @@ def main(start, end, max_range, operator):
         else:
             result = numbers[0] - numbers[1]
 
+        if timer is True:
+            start_time = timeit.default_timer()
+
         response = int(input())
+
+        if timer is True:
+            response_time = timeit.default_timer() - start_time
+            print(f"Temps de réponse : {response_time:04.2f} secondes")
+            total_time += response_time
 
         if response == result:
             print(f"Bonne réponse!")
@@ -83,6 +95,7 @@ def main(start, end, max_range, operator):
             print(f"Mauvaise réponse, le résulat attendue est: {result}")
 
     print(f"Ton score est de {score} / {max_range}")
+    print(f"Temps de réponse total : {total_time:04.2f}")
 
 
 if __name__ == "__main__":
@@ -93,6 +106,8 @@ if __name__ == "__main__":
     PARSER.add_argument("end", type=int, help="Nombre de fin de l'intervale")
     PARSER.add_argument("range", type=int, help="Nombre de début de calculs")
     PARSER.add_argument("-o", "--operator", type=str, help="Force l'opérateur")
+    PARSER.add_argument("-t", "--timer", action="store_true",
+                        help="Ajoute un timer")
     ARGS = PARSER.parse_args()
 
-    main(ARGS.start, ARGS.end, ARGS.range, ARGS.operator)
+    pymath(ARGS.start, ARGS.end, ARGS.range, ARGS.operator, ARGS.timer)
