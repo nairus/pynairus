@@ -11,6 +11,22 @@ Aide:
 import random
 import timeit
 
+# Stocke les réponses justes
+ANSWERS = {}
+
+
+def is_already_answered(numbers):
+    """
+    Vérifie si la réponse juste a déjà été donnée au tuple (left,right,operator)
+        :param numbers: Le tuple de calcul à tester.
+        :type numbers: tuple
+        :return bool
+    """
+    if ANSWERS.get(numbers) is None:
+        return False
+
+    return ANSWERS.get(numbers)
+
 
 def generate_random(start, end, operator):
     """"
@@ -25,20 +41,25 @@ def generate_random(start, end, operator):
     """
     if operator == '-':
         """cas des soustractions:
-        - la première opérande doit être supérieur ou égale à la seconde
+        - la première opérande doit être supérieure ou égale à la seconde
         afin d'éviter un résultat négatif"""
         second_number = random.randrange(start, int(end / 2))
         first_number = random.randrange(second_number, end)
-    elif operator == "*" and start <= 10 and end <= 10:
+    elif operator == "*" and (1 <= start <= 10) and (1 <= end <= 10):
         """cas des tables de multiplication simple :
-        - les bornes doivent être comprises entre 0 et 10)
+        - les bornes doivent être comprises entre 1 et 10)
         - la première opérande doit être compris dans la borne
-        - la seconde opérande doit être un nombre entre 0 et 10"""
+        - la seconde opérande doit être un nombre entre 1 et 10"""
         first_number = random.randrange(start, end)
-        second_number = random.randrange(0, 10)
-    else:
+        second_number = random.randrange(1, 10)
+    elif operator == "+":
         first_number = random.randrange(start, end)
         second_number = random.randrange(start, end)
+    else:
+        # Dans les autres les arguments ne sont pas reconnus.
+        from errors.bad_arguments_error import BadArgmentsError
+        raise BadArgmentsError(
+            f"Erreur d'opération pour le tuple : ({start}, {end}, {operator})")
 
     return (first_number, second_number, operator)
 
@@ -55,6 +76,9 @@ def pymath(start, end, max_range, operator, timer):
         :type max_range:  int
         :type operator:   str
     """
+    # On vide la collection de réponses.
+    ANSWERS.clear()
+
     if timer is True:
         # Initialisation du temps total de réponse.
         total_time = 0
@@ -70,32 +94,42 @@ def pymath(start, end, max_range, operator, timer):
     score = 0
 
     for numbers in numbers_operations:
-        print(f"{numbers[0]} {numbers[2]} {numbers[1]} = ?")
-        if numbers[2] == "+":
-            result = numbers[0] + numbers[1]
-        elif numbers[2] == "*":
-            result = numbers[0] * numbers[1]
+        while is_already_answered(numbers):
+            numbers = generate_random(*numbers)
+
+        left, right, operator = numbers
+
+        print(f"{left} {operator} {right} = ?")
+        if operator == "+":
+            result = left + right
+        elif operator == "*":
+            result = left * right
         else:
-            result = numbers[0] - numbers[1]
+            result = left - right
 
         if timer is True:
             start_time = timeit.default_timer()
 
-        response = int(input())
-
-        if timer is True:
-            response_time = timeit.default_timer() - start_time
-            print(f"Temps de réponse : {response_time:04.2f} secondes")
-            total_time += response_time
-
-        if response == result:
-            print(f"Bonne réponse!")
-            score += 1
+        try:
+            response = int(input())
+        except ValueError as identifier:
+            print(f"Erreur de saisie: {identifier}")
         else:
-            print(f"Mauvaise réponse, le résulat attendue est: {result}")
+            if timer is True:
+                response_time = timeit.default_timer() - start_time
+                print(f"Temps de réponse : {response_time:04.2f} secondes")
+                total_time += response_time
 
-    print(f"Ton score est de {score} / {max_range}")
-    print(f"Temps de réponse total : {total_time:04.2f}")
+            if response == result:
+                print(f"Bonne réponse!")
+                score += 1
+                ANSWERS[(left, right, operator)] = True
+            else:
+                ANSWERS[(left, right, operator)] = False
+                print(f"Mauvaise réponse, le résulat attendue est: {result}")
+
+        print(f"Ton score est de {score} / {max_range}")
+        print(f"Temps de réponse total : {total_time:04.2f}")
 
 
 if __name__ == "__main__":
@@ -103,9 +137,12 @@ if __name__ == "__main__":
     PARSER = argparse.ArgumentParser()
     PARSER.add_argument("start", type=int,
                         help="Nombre de début de l'intervale")
-    PARSER.add_argument("end", type=int, help="Nombre de fin de l'intervale")
-    PARSER.add_argument("range", type=int, help="Nombre de début de calculs")
-    PARSER.add_argument("-o", "--operator", type=str, help="Force l'opérateur")
+    PARSER.add_argument("end", type=int,
+                        help="Nombre de fin de l'intervale")
+    PARSER.add_argument("range", type=int,
+                        help="Nombre de début de calculs")
+    PARSER.add_argument("-o", "--operator", type=str,
+                        help="Force l'opérateur")
     PARSER.add_argument("-t", "--timer", action="store_true",
                         help="Ajoute un timer")
     ARGS = PARSER.parse_args()
