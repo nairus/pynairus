@@ -76,6 +76,9 @@ def pymath(start, end, max_range, operator, timer):
         :type max_range:  int
         :type operator:   str
     """
+    # On vide la collection de réponses.
+    ANSWERS.clear()
+
     if timer is True:
         # Initialisation du temps total de réponse.
         total_time = 0
