@@ -41,7 +41,7 @@ def generate_random(start, end, operator):
     """
     if operator == '-':
         """cas des soustractions:
-        - la première opérande doit être supérieur ou égale à la seconde
+        - la première opérande doit être supérieure ou égale à la seconde
         afin d'éviter un résultat négatif"""
         second_number = random.randrange(start, int(end / 2))
         first_number = random.randrange(second_number, end)
