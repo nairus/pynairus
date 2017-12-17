@@ -71,10 +71,12 @@ def pymath(start, end, max_range, operator, timer):
         :param end:       Borne de fin.
         :param max_range: Plage maximum de calculs à générer.
         :param operator:  Opérateur.
+        :param timer:     Activation du timer.
         :type start:      int
         :type end:        int
         :type max_range:  int
         :type operator:   str
+        :type timer:      bool
     """
     # On vide la collection de réponses.
     ANSWERS.clear()
@@ -129,7 +131,9 @@ def pymath(start, end, max_range, operator, timer):
                 print(f"Mauvaise réponse, le résulat attendue est: {result}")
 
         print(f"Ton score est de {score} / {max_range}")
-        print(f"Temps de réponse total : {total_time:04.2f}")
+
+        if timer is True:
+            print(f"Temps de réponse total : {total_time:04.2f}")
 
 
 if __name__ == "__main__":
