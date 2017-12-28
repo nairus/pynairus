@@ -96,8 +96,11 @@ def pymath(start, end, max_range, operator, timer):
     score = 0
 
     for numbers in numbers_operations:
+        # On boucle tant qu'on génére une opération déjà réussie.
         while is_already_answered(numbers):
-            numbers = generate_random(*numbers)
+            # On récupère l'opérateur.
+            _, _, operator = numbers
+            numbers = generate_random(start, end, operator)
 
         left, right, operator = numbers
 
