@@ -1,24 +1,27 @@
 #!/usr/bin/env python
 # coding: utf-8
-"""
-Module qui génére des calculs aléatoire
 
-Aide:
+"""
+Generate ramdoms numbers for mathematical operations
+
+Show the help:
     $ python run.py -h
 
 """
 
 import random
 import timeit
+from pynairus.errors.app_error import BadArgmentsError
 
-# Stocke les réponses justes
+# Store good anwsers
 ANSWERS = {}
 
 
 def is_already_answered(numbers):
     """
-    Vérifie si la réponse juste a déjà été donnée au tuple (left,right,operator)
-        :param numbers: Le tuple de calcul à tester.
+    Check if a good anwser has been stored in the "ANSWERS" tuple.
+
+        :param numbers: The operations tuple to test.
         :type numbers: tuple
         :return bool
     """
@@ -30,14 +33,14 @@ def is_already_answered(numbers):
 
 def generate_random(start, end, operator):
     """"
-    Génère un nombre aléatoire.
-        :param start:    Borne de début.
-        :param end:      Borne de fin.
-        :param operator: Opérateur.
+    Generate ramdom number.
+        :param start:    Start range.
+        :param end:      End range.
+        :param operator: Operator.
         :type start:     int
         :type end:       int
         :type operator:  str
-        :return tuple Retourne un tuple de (first_number, second_number, operator)
+        :return tuple of (first_number, second_number, operator)
     """
     if operator == '-':
         """cas des soustractions:
@@ -57,7 +60,6 @@ def generate_random(start, end, operator):
         second_number = random.randrange(start, end)
     else:
         # Dans les autres les arguments ne sont pas reconnus.
-        from errors.bad_arguments_error import BadArgmentsError
         raise BadArgmentsError(
             f"Erreur d'opération pour le tuple : ({start}, {end}, {operator})")
 

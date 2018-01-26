@@ -1,8 +1,8 @@
 """Test de la fonction generate_random du module pymath."""
 
 import unittest
-from pymath import generate_random
-from errors.bad_arguments_error import BadArgmentsError
+from pynairus.pymath import generate_random
+from pynairus.errors.app_error import BadArgmentsError
 
 
 class TestPymathGenerateRandom(unittest.TestCase):

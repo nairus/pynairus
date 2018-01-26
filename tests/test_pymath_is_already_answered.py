@@ -1,8 +1,8 @@
 """Test de la fonction is_already_answered du module pymath."""
 
 import unittest
-from pymath import is_already_answered
-from pymath import ANSWERS
+from pynairus.pymath import is_already_answered
+from pynairus.pymath import ANSWERS
 
 GOOD_ANSWER = (1, 5, "*")
 BAD_ANSWER = (1, 3, "-")
