@@ -4,8 +4,8 @@
 """Module of strategies for random mathematical operation generation."""
 
 import random
-from pynairus.validators import operator_validator as py_ov
-from pynairus.errors import app_error as err
+from ..validators import operator_validator as py_ov
+from ..errors import app_error as err
 
 # Constants for the keys of the dictionnary strategies.
 ADD_OPERATOR_KEY = "+"
@@ -37,20 +37,34 @@ class ComputeNumbers():
         self.validator = validator
 
     def __repr__(self):
-        """String representation."""
+        """String representation.
+
+        :return: str
+        """
         return f"{self.first} {self.operator} {self.second} = ?"
 
     def validate(self, result):
-        """Validate the result."""
+        """Validate the result.
+
+        :return: bool True if the result is right, False otherwise
+        """
         return self.validator.validate(result, self.first, self.second)
 
     def get_good_result(self):
-        """Return the expected result."""
+        """Return the expected result.
+
+        :return: int
+        """
         return self.validator.get_result(self.first, self.second)
 
 
 class BaseStrategy():
-    """Abstract class of operator strategy."""
+    """Abstract class of operator strategy.
+
+        :param validator: the validator instance.
+
+        :type validator: BaseValidator
+    """
 
     def __init__(self, validator):
         self.validator = validator
@@ -61,15 +75,32 @@ class BaseStrategy():
         raise err.StrategyError(message)
 
     def get_validator(self):
-        """Return the validator."""
+        """Return the validator of the strategy.
+
+        :return: BaseValidator
+        """
         return self.validator
 
 
 class AdditionStrategy(BaseStrategy):
-    """Strategy for random additions."""
+    """Strategy for random additions.
+
+        :param validator: the validator instance.
+
+        :type validator: AdditionValidator
+    """
 
     def generate_random(self, start, end):
-        """Implementation of random generation for addition strategy."""
+        """Implementation of random generation for addition strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+        """
         first = random.randint(start, end)
         second = random.randint(start, end)
         return ComputeNumbers(first, second,
@@ -78,10 +109,24 @@ class AdditionStrategy(BaseStrategy):
 
 
 class SubstractionStrategy(BaseStrategy):
-    """Strategy for random substrations."""
+    """Strategy for random substrations.
+
+        :param validator: the validator instance.
+
+        :type validator: SubstractionValidator
+    """
 
     def generate_random(self, start, end):
-        """Implementation of random generation for substraction strategy."""
+        """Implementation of random generation for substraction strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+        """
         first = random.randint(start, end)
         second = random.randint(start, end)
 
@@ -97,11 +142,27 @@ class SubstractionStrategy(BaseStrategy):
 
 
 class MutliplicationTableStrategy(BaseStrategy):
-    """Strategy for random mutliplication table operations."""
+    """Strategy for random mutliplication table operations.
+
+        :param validator: the validator instance.
+
+        :type validator: MultiplicationValidator
+    """
 
     def generate_random(self, start, end):
         """Implementation of random generation
-        for table multiplication strategy."""
+        for table multiplication strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+
+        :raise: BadArgmentsError in case of bad range
+        """
         if start < 1 or start > 10:
             err_message = f"the start param must be between 1 and 10 included: {start} given"
             raise err.BadArgmentsError(err_message)
@@ -119,11 +180,25 @@ class MutliplicationTableStrategy(BaseStrategy):
 
 
 class SimpleMutliplicationStrategy(BaseStrategy):
-    """Strategy for random mutliplication with 1 digit factor."""
+    """Strategy for random mutliplication with 1 digit factor.
+
+        :param validator: the validator instance.
+
+        :type validator: MultiplicationValidator
+    """
 
     def generate_random(self, start, end):
         """Implementation of random generation
-        for simple multiplication strategy."""
+        for simple multiplication strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+        """
         first = random.randint(start, end)
         second = random.randint(1, 10)
         return ComputeNumbers(first,
@@ -133,11 +208,25 @@ class SimpleMutliplicationStrategy(BaseStrategy):
 
 
 class ComplexMutliplicationStrategy(BaseStrategy):
-    """Strategy for random mutliplication with n digits factor."""
+    """Strategy for random mutliplication with n digits factor.
+
+        :param validator: the validator instance.
+
+        :type validator: MultiplicationValidator
+    """
 
     def generate_random(self, start, end):
         """Implementation of random generation
-        for complex multiplication strategy."""
+        for complex multiplication strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+        """
         first = random.randint(start, end)
         second = random.randint(start, end)
         return ComputeNumbers(first,

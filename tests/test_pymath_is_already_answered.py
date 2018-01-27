@@ -1,4 +1,4 @@
-"""Test de la fonction is_already_answered du module pymath."""
+"""Unit tests module for is_already_answered function."""
 
 import unittest
 from pynairus.pymath import is_already_answered
@@ -9,29 +9,29 @@ BAD_ANSWER = (1, 3, "-")
 
 
 class TestPymathIsAlreadyAnswered(unittest.TestCase):
-    """Classe de test de la fonction is_already_answered du module pymath."""
+    """Unit test for is_already_answered function."""
 
     def setUp(self):
-        """Méthode invoquée avant chaque test."""
+        """Invoked before every tests."""
         ANSWERS[GOOD_ANSWER] = True
         ANSWERS[BAD_ANSWER] = False
 
     def tearDown(self):
-        """Méthode invoquée après chaque test."""
+        """Invoked after every tests."""
         # On vide le dictionnaire après chaque test.
         ANSWERS.clear()
 
     def test_not_exists(self):
-        """Test de non existance."""
+        """Not exist test."""
         self.assertFalse(is_already_answered((1, 2, '+')),
-                         msg=f"Le tuple (1, 2, '+') ne doit pas exister dans les réponses.")
+                         msg=f"the tuple (1, 2, '+') must exist in the answers.")
 
     def test_exists_and_true(self):
-        """Test d'existance avec une réponse juste."""
+        """Testing if the right anwser exists."""
         self.assertTrue(is_already_answered(GOOD_ANSWER),
-                        msg=f"Le tuple {GOOD_ANSWER} doit exister et True.")
+                        msg=f"the tuple {GOOD_ANSWER} must exist and be True.")
 
     def test_exists_and_false(self):
-        """Test d'existance avec une réponse fausse."""
+        """Testing if the wrong answer exists."""
         self.assertFalse(is_already_answered(BAD_ANSWER),
-                         msg=f"Le tuple {BAD_ANSWER} doit exister et False.")
+                         msg=f"the tuple {BAD_ANSWER} must exist and be False.")

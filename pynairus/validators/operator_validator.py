@@ -3,14 +3,25 @@
 
 """Module for operation validation."""
 
-from pynairus.errors.app_error import ValidateError
+from ..errors.app_error import ValidateError
 
 
 class BaseValidator():
     """Abstract class for validators."""
 
     def validate(self, answer, first, second):
-        """Validate method to overwrite."""
+        """Validate the answer.
+
+            :param answer: the answer to validate
+            :param first:  the first number of the operation
+            :param second: the second number of the operation
+
+            :type answer: int
+            :type first:  int
+            :type second: int
+
+            :return: bool
+        """
         return answer == self.get_result(first, second)
 
     def get_result(self, first, second):
@@ -23,7 +34,16 @@ class AdditionValidator(BaseValidator):
     """Validator for addition."""
 
     def get_result(self, first, second):
-        """Return the result of the addition."""
+        """Return the result of the addition.
+
+            :param first:  first number
+            :param second: second number
+
+            :type first:  int
+            :type second: int
+
+            :return: int
+        """
         return first + second
 
 
@@ -31,7 +51,16 @@ class SubstractionValidator(BaseValidator):
     """Validator for substraction."""
 
     def get_result(self, first, second):
-        """Return the result of the substraction."""
+        """Return the result of the substraction.
+
+            :param first:  first number
+            :param second: second number
+
+            :type first:  int
+            :type second: int
+
+            :return: int
+        """
         return first - second
 
 
@@ -39,5 +68,14 @@ class MultiplicationValidator(BaseValidator):
     """Validator for multiplication."""
 
     def get_result(self, first, second):
-        """Return the result for the multiplication."""
+        """Return the result for the multiplication.
+
+            :param first:  first number
+            :param second: second number
+
+            :type first:  int
+            :type second: int
+
+            :return: int
+        """
         return first * second

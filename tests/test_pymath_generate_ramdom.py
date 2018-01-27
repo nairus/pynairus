@@ -1,62 +1,41 @@
-"""Test de la fonction generate_random du module pymath."""
+"""Unit test module for pymath.generate_random function."""
 
 import unittest
 from pynairus.pymath import generate_random
 from pynairus.errors.app_error import BadArgmentsError
+from pynairus.strategies import operator_strategy as ns_os
 
 
 class TestPymathGenerateRandom(unittest.TestCase):
-    """ Classe de test du module pymath.generate_random."""
+    """Unit tests for pymath.generate_random function."""
 
     def test_substraction_generation(self):
-        """Test de la génération de soustraction aléatoire."""
-
-        min_num = 10
-        max_num = 50
-
-        # On fait le test sur 50 générations
-        for i in range(50):
-            left, right, _ = generate_random(min_num, max_num, '-')
-
-            # L'opérande de gauche doit être comprise entre l'opérande de droite et la borne max.
-            self.assertTrue(
-                right <= left <= max_num,
-                msg=f"{i + 1}. L'opérande de gauche({left}) doit être comprise entre l'opérande de droite({right}) et la borne max({max_num}).")
+        """Test substraction generation"""
+        strategy = generate_random(10, 99, '-')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
 
     def test_addition_generation(self):
-        """Test de la génération de l'addition."""
-        min_num = 10
-        max_num = 20
+        """Test addition generation."""
+        strategy = generate_random(10, 99, '+')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
 
-        # On fait le test sur 50 générations
-        for i in range(50):
-            left, right, _ = generate_random(min_num, max_num, '+')
+    def test_mult_table_generation(self):
+        """Test de la génération de multiplication table."""
+        strategy = generate_random(1, 3, '*')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
 
-            self.assertTrue(min_num <= left <= max_num,
-                            msg=f"1.{i+1}. L'opérande de gauche ({left}) doit être comprise entre {min_num} et {max_num}).")
+    def test_simple_mult_generation(self):
+        """Test the simple multiplication generation."""
+        strategy = generate_random(10, 99, '1*')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
 
-            self.assertTrue(min_num <= right <= max_num,
-                            msg=f"2.{i+1}. L'opérande de droite ({right}) doit être comprise entre {min_num} et {max_num}).")
-
-    def test_multiplication_generation(self):
-        """Test de la génération de multiplication."""
-
-        # On fait le test sur 50 générations
-        for i in range(50):
-            min_num = 1
-            max_num = 3
-            left, right, _ = generate_random(min_num, max_num, '*')
-
-            # Le facteur de gauche doit être compris entre le min et le max.
-            self.assertTrue(min_num <= left <= max_num,
-                            msg=f"1.{i+1}. Le facteur de gauche ({left}) doit être compris entre {min_num} et {max_num}.")
-
-            # Le facteur de droite doit être compris entre 1 et 10.
-            self.assertTrue(1 <= right <= 10,
-                            msg=f"1.{i+1}. Le facteur de droite ({right}) doit être compris entre 1 et 10.")
+    def test_complex_mult_generation(self):
+        """Test the complex multiplication generation."""
+        strategy = generate_random(10, 99, 'n*')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
 
     def test_bad_parameters(self):
-        """Test de levée d'exception en cas de mauvais paramètres."""
+        """Test raise exception in case of unknown operator."""
         with self.assertRaises(BadArgmentsError,
-                               message="BadArgmentsError attendue"):
-            generate_random(0, 0, "*")
+                               msg="BadArgmentsError expected"):
+            generate_random(10, 99, "x")

@@ -1,4 +1,4 @@
-"""Infos du package pymath."""
+"""Infos du package pynairus."""
 
 __version__ = "2.1.0"
 VERSION = tuple([v for v in __version__.split(".")])
