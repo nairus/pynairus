@@ -80,14 +80,18 @@ def pymath(start, end, max_range, operator, timer):
     score = 0
 
     for numbers in numbers_operations:
+        # we generate the key for the answer
+        answer_key = (numbers.first, numbers.second, numbers.operator)
+
         # loop until we found an good anwser not already given
-        while is_already_answered(numbers):
+        while is_already_answered(answer_key):
             # generate another operation
             numbers = generate_random(start, end, numbers.operator)
+            # we create another answer key
+            answer_key = (numbers.first, numbers.second, numbers.operator)
 
         print(f"{numbers}")
         result = numbers.get_good_result()
-        answer_key = (numbers.first, numbers.second, numbers.operator)
 
         if timer is True:
             start_time = timeit.default_timer()
