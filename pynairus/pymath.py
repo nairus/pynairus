@@ -87,7 +87,7 @@ def pymath(start, end, max_range, operator, timer):
 
         print(f"{numbers}")
         result = numbers.get_good_result()
-        answer_key = (numbers.left, numbers.right, numbers.operator)
+        answer_key = (numbers.first, numbers.second, numbers.operator)
 
         if timer is True:
             start_time = timeit.default_timer()
