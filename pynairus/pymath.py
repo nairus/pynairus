@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # coding: utf-8
 
 """pymath module"""
@@ -47,9 +46,9 @@ def generate_random(start, end, operator):
     return strategy.generate_random(start, end)
 
 
-def pymath(start, end, max_range, operator, timer):
+def pymath(start, end, max_range, operator=None, timer=False):
     """
-    Main function.
+    Launch application of random operations.
         :param start:     start range.
         :param end:       end range.
         :param max_range: max operations to generate.
@@ -69,8 +68,9 @@ def pymath(start, end, max_range, operator, timer):
         # Initialisation of the total time for the answers.
         total_time = 0
 
+    # by default we build a tuple of addition and substraction operations
     if operator is None:
-        operators = ("+", "-")
+        operators = (ns_os.ADD_OPERATOR_KEY, ns_os.SUB_OPERATOR_KEY)
     else:
         operators = (operator, operator)
 
