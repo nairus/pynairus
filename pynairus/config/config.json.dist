@@ -1,0 +1,11 @@
+# Example of application json config file
+# Do not modify this use this file.
+# Copy it without the `dist` extension, ignore it in you git repos and remove this documentation.
+# See https://martin-thoma.com/configuration-files-in-python/#json
+{
+    "log": {
+        "enable": false,
+        "level": "DEBUG",
+        "filename": "pynairus.log"
+    }
+}

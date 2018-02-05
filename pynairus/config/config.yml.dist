@@ -1,0 +1,10 @@
+# Example of application yaml config file
+# Do not modify this use this file.
+# Copy it without the `dist` extension and ignore it in you git repos.
+# Install the `pyyaml` module to use this config file
+
+
+log:
+    enable: false
+    level: DEBUG
+    filename: pynairus.log

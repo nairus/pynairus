@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # coding: utf-8
 
 """Module of strategies for random mathematical operation generation."""
@@ -15,8 +14,15 @@ SIMPLE_MULT_OPERATOR_KEY = "1*"
 COMPLEX_MULT_OPERATOR_KEY = "n*"
 
 
-def get_list_operator_key():
-    """Return a tuple of key operator allowed with explanation."""
+def display_operators_list():
+    """Display the available operators list."""
+    from pprint import pprint
+    print("Available Operators list:")
+    pprint(get_operators_list())
+
+
+def get_operators_list():
+    """Return a tuple of operators allowed with explanation."""
     return (
         (ADD_OPERATOR_KEY, "Key for addition operation"),
         (SUB_OPERATOR_KEY, "Key for substraction operation"),

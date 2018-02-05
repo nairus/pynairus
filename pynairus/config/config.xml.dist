@@ -1,0 +1,15 @@
+<!--
+Example of xml config
+Do not modify this use this file.
+Copy it without the `dist` extension and ignore it in you git repos.
+Install the `BeautifulSoup` module to use this config file
+see: https://martin-thoma.com/configuration-files-in-python/#xml_1
+-->
+<?xml version="1.0"?>
+<config>
+    <log>
+        <enable>false</enable>
+        <level>DEBUG</level>
+        <filename>pynairus.log</filename>
+    </log>
+</config>
