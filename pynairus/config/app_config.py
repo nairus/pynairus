@@ -8,9 +8,6 @@ import logging.config
 from ..helpers.file_helper import get_file_path
 from ..errors.app_error import BadArgmentsError
 
-# Defines the logs file path.
-LOG_FILE_PATH = Path("pynairus/logs/pymath.log")
-
 
 class AppLogger():
     """Descriptor for the app logger."""
@@ -104,9 +101,7 @@ def parse_ini(filename="app_config.ini"):
         config_name = config_parser.get("log", "config_name")
         logger_name = config_parser.get("log", "logger_name")
 
-        logging.config.fileConfig(
-            Path(f"pynairus/config/{config_name}",
-                 defaults={'logfilename': LOG_FILE_PATH}))
+        logging.config.fileConfig(Path(f"pynairus/config/{config_name}"))
         logger = logging.getLogger(logger_name)
 
         return AppConfig(logger, log_enabled)

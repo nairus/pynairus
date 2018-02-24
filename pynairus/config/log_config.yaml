@@ -19,7 +19,7 @@ handlers:
     stream: ext://sys.stdout
   file:
     class: logging.FileHandler
-    filename: pynairus/logs/pymath.log
+    filename: pynairus/logs/pymath.default.log
     level: DEBUG
     formatter: file
 loggers:
