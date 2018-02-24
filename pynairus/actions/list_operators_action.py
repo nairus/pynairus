@@ -1,4 +1,5 @@
 # coding: utf-8
+
 """Module list operators action."""
 
 import argparse

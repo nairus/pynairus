@@ -1,5 +1,12 @@
 # PYMATH CHANGELOG
 
+## 2.2.0 (2018-xx-xx)
+
+* Add README, CHANGELOG, LICENSE files
+* Add logging system
+* Add list operators action (for run.py)
+* Add multiple config (yml, ini, json, xml)
+
 ## 2.1.2 (2018-01-27)
 
 * Fix saving answer

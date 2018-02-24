@@ -4,8 +4,8 @@
 # See https://martin-thoma.com/configuration-files-in-python/#json
 {
     "log": {
-        "enable": false,
-        "level": "DEBUG",
-        "filename": "pynairus.log"
+        "enabled": false,
+        "config_name": "log_config.ini.conf",
+        "logger_name": "pymath"
     }
 }

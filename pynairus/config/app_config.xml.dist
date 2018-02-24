@@ -8,8 +8,8 @@ see: https://martin-thoma.com/configuration-files-in-python/#xml_1
 <?xml version="1.0"?>
 <config>
     <log>
-        <enable>false</enable>
-        <level>DEBUG</level>
-        <filename>pynairus.log</filename>
+        <enabled>false</enabled>
+        <config_name>log_config.ini.conf</config_name>
+        <logger_name>pymath</logger_name>
     </log>
 </config>

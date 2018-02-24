@@ -5,6 +5,6 @@
 
 
 log:
-    enable: false
-    level: DEBUG
-    filename: pynairus.log
+    enabled: false
+    config_name: log_config.yaml
+    logger_name: pymath

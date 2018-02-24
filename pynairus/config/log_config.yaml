@@ -1,0 +1,32 @@
+# Default log yml dictionary config file.
+#
+# If you want to load another config:
+#   * copy this file,
+#   * change extension in .yml to ignore it in the git repos
+#   * change "config_name" in "app_config.yml" file
+
+version: 1
+formatters:
+  console:
+    format: '%(levelname)s - %(message)s'
+  file:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: console
+    stream: ext://sys.stdout
+  file:
+    class: logging.FileHandler
+    filename: pynairus/logs/pymath.log
+    level: DEBUG
+    formatter: file
+loggers:
+  pymath:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
+root:
+  level: DEBUG
+  handlers: [console]

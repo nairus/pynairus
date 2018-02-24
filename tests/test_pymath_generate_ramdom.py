@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """Unit test module for pymath.generate_random function."""
 
 import unittest

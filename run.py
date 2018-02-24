@@ -12,6 +12,7 @@ Show the help:
 from pynairus.errors import app_error as err
 import pynairus.strategies.operator_strategy as ns_os
 from pynairus.actions.list_operators_action import ListOperatorsAction
+from pynairus.actions.version_action import VersionAction
 
 if __name__ == "__main__":
     import argparse
@@ -28,6 +29,8 @@ if __name__ == "__main__":
                         help="Add a timer")
     PARSER.add_argument("-l", "--list_operator", action=ListOperatorsAction,
                         help="Display the list of operators and exit")
+    PARSER.add_argument("-V", "--version", action=VersionAction,
+                        help="Display the current version and exit")
 
     ARGS = PARSER.parse_args()
 

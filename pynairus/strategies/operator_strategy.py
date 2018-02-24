@@ -28,7 +28,8 @@ def get_operators_list():
         (SUB_OPERATOR_KEY, "Key for substraction operation"),
         (MULT_TABLE_OPERATOR_KEY, "Key for table operation (ex. 4*3)"),
         (SIMPLE_MULT_OPERATOR_KEY, "Key for simple mutliplication (ex. 45*2)"),
-        (COMPLEX_MULT_OPERATOR_KEY, "Key for complex multiplication (ex. 12*11)")
+        (COMPLEX_MULT_OPERATOR_KEY,
+            "Key for complex multiplication (ex. 12*11)")
     )
 
 

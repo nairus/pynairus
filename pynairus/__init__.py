@@ -1,4 +1,5 @@
 # coding: utf-8
+
 """Infos du package pynairus."""
 
 __version__ = "2.2.0"
