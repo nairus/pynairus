@@ -42,13 +42,13 @@ You can also run the application by importing the lib like:
 from pynairus import pymath
 
 # for multiplication tables
-pymath.pymath(3, 5, 10, "*", False)
+pymath.pymath(3, 5, 10, "*")
 
 # for multiplication with 1 digit factor
-pymath.pymath(10, 999, 10, "1*", False)
+pymath.pymath(10, 999, 10, "1*")
 
 # for multiplication with multiple digit factor
-pymath.pymath(10, 999, 10, "n*", False)
+pymath.pymath(10, 999, 10, "n*")
 ```
 
 If you want see all the operators available you do like this:

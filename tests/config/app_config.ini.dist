@@ -1,0 +1,11 @@
+; app test ini config file
+
+[bad_section]
+; enable log and raising exception (val: yes or no)
+enabled = yes
+
+; name of the log config filename
+config_name = log_config.ini.conf
+
+; name of the main logger
+logger_name = pymath

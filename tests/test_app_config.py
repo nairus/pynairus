@@ -39,7 +39,7 @@ class AppConfigTest(unittest.TestCase):
 
     def test_parse_yml(self):
         """Test of the [parse_yml] function."""
-        app_config = py_ac.parse_yml(filename="app_config.yml.dist")
+        app_config = py_ac.parse_yml()
 
         self.assertIsInstance(
             app_config, py_ac.AppConfig,
@@ -50,13 +50,29 @@ class AppConfigTest(unittest.TestCase):
 
         self.assertTrue(TEST_LOG_FILE_PATH.exists(),
                         msg="3. The log file musts exist")
+
+        test_debug = "Test DEBUG"
+        logger = app_config.logger
+        logger.debug(test_debug)
 
         # free the resource for the other tests
         app_config.logger.handlers[1].close()
 
+        with open(TEST_LOG_FILE_PATH) as test_log_file:
+            self.assertIn(test_debug, test_log_file.read(),
+                          msg="4. The message must be written")
+
+        with self.assertRaisesRegex(
+            KeyError,
+            r"\[log\] section is missing",
+            msg="5. The function must raise a [KeyError]"
+        ):
+            test_filepath = "tests/config/app_config.yml.dist"
+            py_ac.parse_yml(filename=test_filepath)
+
     def test_parse_ini(self):
         """Test of the [parse_ini] function."""
-        app_config = py_ac.parse_ini(filename="app_config.ini.dist")
+        app_config = py_ac.parse_ini()
 
         self.assertIsInstance(
             app_config, py_ac.AppConfig,
@@ -68,12 +84,57 @@ class AppConfigTest(unittest.TestCase):
         self.assertTrue(TEST_LOG_FILE_PATH.exists(),
                         msg="3. The log file musts exist")
 
+        test_debug = "Test DEBUG"
+        logger = app_config.logger
+        logger.debug(test_debug)
+
         # free the resource for the other tests
         app_config.logger.handlers[0].close()
 
-    @unittest.skip("To implement")
+        with open(TEST_LOG_FILE_PATH) as test_log_file:
+            self.assertIn(test_debug, test_log_file.read(),
+                          msg="4. The message must be written")
+
+        with self.assertRaisesRegex(
+            KeyError,
+            r"\[log\] section is missing",
+            msg="5. The function must raise a [KeyError]"
+        ):
+            test_filepath = "tests/config/app_config.ini.dist"
+            py_ac.parse_ini(filename=test_filepath)
+
     def test_parse_json(self):
         """Test of the [parse_json] function."""
+        app_config = py_ac.parse_json()
+
+        self.assertIsInstance(
+            app_config, py_ac.AppConfig,
+            msg="1. The methode must return an instance of [AppConfig]")
+
+        self.assertFalse(app_config.log_enabled,
+                         msg="2. The logs must be disabled")
+
+        self.assertTrue(TEST_LOG_FILE_PATH.exists(),
+                        msg="3. The log file musts exist")
+
+        test_debug = "Test DEBUG"
+        logger = app_config.logger
+        logger.debug(test_debug)
+
+        # free the resource for the other tests
+        app_config.logger.handlers[0].close()
+
+        with open(TEST_LOG_FILE_PATH) as test_log_file:
+            self.assertIn(test_debug, test_log_file.read(),
+                          msg="4. The message must be written")
+
+        with self.assertRaisesRegex(
+            KeyError,
+            r"\[log\] section is missing",
+            msg="5. The function must raise a [KeyError]"
+        ):
+            test_filepath = "tests/config/app_config.json.dist"
+            py_ac.parse_json(filename=test_filepath)
 
     @unittest.skip("To implement")
     def test_parse_xml(self):

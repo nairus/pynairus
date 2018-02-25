@@ -55,14 +55,18 @@ class AppConfig():
     logger = AppLogger()
 
 
-def parse_yml(filename="app_config.yml"):
+def parse_yml(filename=None):
     """Parse the yml config file.
 
     :return: AppConfig
     """
     import yaml
 
-    app_config_path = get_file_path(f"pynairus/config/{filename}")
+    if filename is None:
+        # set the default config file
+        filename = "pynairus/config/app_config.yml.dist"
+
+    app_config_path = get_file_path(filename)
     with open(app_config_path, "r") as ymlfile:
         yml_app_config_file = yaml.load(ymlfile)
 
@@ -83,12 +87,20 @@ def parse_yml(filename="app_config.yml"):
         return AppConfig(logger, log_enabled=log_enabled)
 
 
-def parse_ini(filename="app_config.ini"):
+def parse_ini(filename=None):
     """Parse the ini config file.
 
     :return: AppConfig
     """
-    app_config_path = get_file_path(f"pynairus/config/{filename}")
+    if filename is None:
+        # set the default config file
+        # to use another config file,
+        # copy it without the `dist` extension,
+        # ignore it in you git repos
+        # and all this function with your config filepath.
+        filename = "pynairus/config/app_config.ini.dist"
+
+    app_config_path = get_file_path(filename)
 
     with open(app_config_path.absolute()) as f:
         import configparser
@@ -101,18 +113,33 @@ def parse_ini(filename="app_config.ini"):
         config_name = config_parser.get("log", "config_name")
         logger_name = config_parser.get("log", "logger_name")
 
-        logging.config.fileConfig(Path(f"pynairus/config/{config_name}"))
-        logger = logging.getLogger(logger_name)
-
-        return AppConfig(logger, log_enabled)
+        return AppConfig(__init_logger(config_name, logger_name),
+                         log_enabled)
 
 
-def parse_json(filename="app_config.json"):
+def parse_json(filename=None):
     """Parse the json file.
 
     :return: AppConfig
     """
-    pass
+    if filename is None:
+        # set default config file
+        filename = "pynairus/config/app_config.json.dist"
+
+    app_config_path = get_file_path(filename)
+
+    with open(app_config_path) as json_config_file:
+        import json
+        config_datas = json.load(json_config_file)
+
+        if "log" not in config_datas:
+            raise KeyError("[log] section is missing")
+
+        log_enabled, config_name, logger_name = config_datas.get(
+            "log").values()
+
+        return AppConfig(__init_logger(config_name, logger_name),
+                         log_enabled)
 
 
 def parse_xml(filename="app_config.xml"):
@@ -121,3 +148,19 @@ def parse_xml(filename="app_config.xml"):
     :return: AppConfig
     """
     pass
+
+
+def __init_logger(config_name, logger_name):
+    """Init the app logger with ini config.
+    Internal function, doo not call !
+
+    :param config_name: the name of the config file
+    :param logger_name: the name of the app logger
+
+    :type config_name: str
+    :type logger_name: str
+
+    :return: logging.Logger
+    """
+    logging.config.fileConfig(Path(f"pynairus/config/{config_name}"))
+    return logging.getLogger(logger_name)

@@ -1,5 +1,6 @@
-; Example of application ini config file
-; Do not modify this use this file.
+; Default application ini config file
+; Do not modify this file.
+; To use another config,
 ; Copy it without the `dist` extension and ignore it in you git repos.
 ; See https://martin-thoma.com/configuration-files-in-python/#ini
 
