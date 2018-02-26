@@ -3,7 +3,7 @@
 """Module file helper."""
 
 from pathlib import Path
-from pynairus.errors.app_error import BadArgmentsError
+from ..errors.app_error import BadArgmentsError
 
 
 def get_file_path(filepath):

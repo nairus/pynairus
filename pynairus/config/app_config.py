@@ -6,7 +6,11 @@ from pathlib import Path
 import logging
 import logging.config
 from ..helpers.file_helper import get_file_path
+from ..helpers.string_helper import get_bool_from_str
 from ..errors.app_error import BadArgmentsError
+
+# Defines the default config folder
+CONFIG_FOLDER = "pynairus/config"
 
 
 class AppLogger():
@@ -37,7 +41,7 @@ class AppConfig():
         :type log_enabled: bool
         :type logger: logging.Logger
         """
-        self._log_enabled = log_enabled
+        self.log_enabled = log_enabled
         self.logger = logger
 
         logging.raiseExceptions = log_enabled
@@ -48,9 +52,13 @@ class AppConfig():
         return self._log_enabled
 
     @log_enabled.setter
-    def set_log_enabled(self, log_enabled):
+    def log_enabled(self, log_enabled):
         """Setter of the property "log_enabled"."""
-        self._log_enabled = bool(log_enabled)
+        arg_type = type(log_enabled)
+        if arg_type is not bool:
+            raise TypeError(f"[bool] type expected: [{arg_type}] given")
+
+        self._log_enabled = log_enabled
 
     logger = AppLogger()
 
@@ -58,13 +66,19 @@ class AppConfig():
 def parse_yml(filename=None):
     """Parse the yml config file.
 
+    :param filename: the path name of the file to parse
+
+    :type filename: str
+
     :return: AppConfig
+
+    :raises KeyError: if log section not exists
     """
     import yaml
 
     if filename is None:
         # set the default config file
-        filename = "pynairus/config/app_config.yml.dist"
+        filename = f"{CONFIG_FOLDER}/app_config.yml.dist"
 
     app_config_path = get_file_path(filename)
     with open(app_config_path, "r") as ymlfile:
@@ -84,13 +98,19 @@ def parse_yml(filename=None):
 
         logging.config.dictConfig(yml_log_config)
         logger = logging.getLogger(logger_name)
-        return AppConfig(logger, log_enabled=log_enabled)
+        return AppConfig(logger, log_enabled)
 
 
 def parse_ini(filename=None):
     """Parse the ini config file.
 
+    :param filename: the path name of the file to parse
+
+    :type filename: str
+
     :return: AppConfig
+
+    :raises KeyError: if log section not exists
     """
     if filename is None:
         # set the default config file
@@ -98,7 +118,7 @@ def parse_ini(filename=None):
         # copy it without the `dist` extension,
         # ignore it in you git repos
         # and all this function with your config filepath.
-        filename = "pynairus/config/app_config.ini.dist"
+        filename = f"{CONFIG_FOLDER}/app_config.ini.dist"
 
     app_config_path = get_file_path(filename)
 
@@ -120,11 +140,17 @@ def parse_ini(filename=None):
 def parse_json(filename=None):
     """Parse the json file.
 
+    :param filename: the path name of the file to parse
+
+    :type filename: str
+
     :return: AppConfig
+
+    :raises KeyError: if log section not exists
     """
     if filename is None:
         # set default config file
-        filename = "pynairus/config/app_config.json.dist"
+        filename = f"{CONFIG_FOLDER}/app_config.json.dist"
 
     app_config_path = get_file_path(filename)
 
@@ -142,12 +168,35 @@ def parse_json(filename=None):
                          log_enabled)
 
 
-def parse_xml(filename="app_config.xml"):
+def parse_xml(filename=None):
     """Parse the xml file.
 
+    :param filename: the path name of the file to parse
+
+    :type filename: str
+
     :return: AppConfig
+
+    :raises KeyError: if log section not exists
     """
-    pass
+    if filename is None:
+        filename = f"{CONFIG_FOLDER}/app_config.xml.dist"
+
+    app_config_path = get_file_path(filename)
+    with open(app_config_path) as config_file:
+        from bs4 import BeautifulSoup
+        xml_content = config_file.read()
+
+        xml_app_config = BeautifulSoup(xml_content, "lxml-xml")
+        if xml_app_config.find("log") is None:
+            raise KeyError("[log] section is missing")
+
+        log_enabled = get_bool_from_str(xml_app_config.log.enabled.string)
+        config_name = xml_app_config.log.config_name.string
+        logger_name = xml_app_config.log.logger_name.string
+
+        return AppConfig(__init_logger(config_name, logger_name),
+                         log_enabled)
 
 
 def __init_logger(config_name, logger_name):

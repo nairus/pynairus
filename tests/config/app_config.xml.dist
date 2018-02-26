@@ -2,15 +2,14 @@
 Default xml file config.
 Do not modify this this file.
 To use another config, copy it without the `dist` extension and ignore it in you git repos.
-Install the `beautifulsoup4` and `lxml` lib to use this config file
+Install the `BeautifulSoup` module to use this config file
 see: https://martin-thoma.com/configuration-files-in-python/#xml_1
-see: https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 -->
 <?xml version="1.0"?>
 <config>
-    <log>
+    <bad_section>
         <enabled>false</enabled>
         <config_name>log_config.ini.conf</config_name>
         <logger_name>pymath</logger_name>
-    </log>
+    </bad_section>
 </config>

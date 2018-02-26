@@ -4,7 +4,7 @@
 
 import argparse
 import pprint
-from pynairus import __version__ as v, __author__ as a, __year__ as y
+from .. import __version__ as v, __author__ as a, __year__ as y
 
 
 class VersionAction(argparse.Action):
