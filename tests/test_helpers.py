@@ -3,7 +3,7 @@
 """Test module for helpers module."""
 
 import unittest
-from pynairus.helpers.file_helper import get_file_path, BadArgmentsError, Path
+from pynairus.helpers.file_helper import get_file_path, Path
 from pynairus.helpers.string_helper import get_bool_from_str, STR_BOOL_VALS
 
 
@@ -12,7 +12,7 @@ class FileHelperTest(unittest.TestCase):
 
     def test_get_file_path(self):
         """Test the the [get_file_path] function."""
-        with self.assertRaises(BadArgmentsError,
+        with self.assertRaises(FileNotFoundError,
                                msg="1. The function must raise an error"):
             get_file_path("not_exists_file")
 

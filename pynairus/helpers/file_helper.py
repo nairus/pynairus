@@ -3,7 +3,6 @@
 """Module file helper."""
 
 from pathlib import Path
-from ..errors.app_error import BadArgmentsError
 
 
 def get_file_path(filepath):
@@ -14,9 +13,11 @@ def get_file_path(filepath):
     :type filepath: str
 
     :return: Path
+
+    :raises: FileNotFoundError if filepath does not exist
     """
     real_filepath = Path(filepath)
     if not real_filepath.exists():
-        raise BadArgmentsError(f"{filepath} does not exit")
+        raise FileNotFoundError(f"{filepath} does not exist")
 
     return real_filepath
