@@ -25,6 +25,10 @@ class AppContextTest(unittest.TestCase):
         """Reset test env."""
         ac.CONFIG_FOLDER_PATH = cls.CONFIG_FOLDER_PATH
 
+    def tearDown(self):
+        """Clean the tests."""
+        ac.AppContext.clearContext()
+
     def test_app_context_singleton(self):
         """Test the singleton creation of AppContext class."""
 
@@ -66,25 +70,82 @@ class AppContextTest(unittest.TestCase):
         self.assertIs(app_context, ac.AppContext(),
                       msg="8. The instance must be a singleton")
 
-    @unittest.skip("todo")
     def test_app_context_bad_config(self):
         """Test with bad [app_config] property."""
+        with self.assertRaisesRegex(
+                TypeError,
+                r"is not an instance of \[AppConfig\]"):
+            test_args = {
+                "start": 1,
+                "end": 2,
+                "limit": 2,
+                "timer": True,
+                "operator": "+"
+            }
 
-    @unittest.skip("todo")
+            ac.AppContext(None, **test_args)
+
     def test_app_context_bad_start(self):
         """Test with bad [start] property."""
+        with self.assertRaisesRegex(
+                TypeError,
+                r"is not an \[int\]"):
+            app_config = af.AppConfig(logging.getLogger(), False)
+            test_args = {
+                "end": 2,
+                "limit": 2,
+                "timer": True,
+                "operator": "+"
+            }
 
-    @unittest.skip("todo")
+            ac.AppContext(app_config, **test_args)
+
     def test_app_context_bad_end(self):
         """Test with bad [end] property."""
+        with self.assertRaisesRegex(
+                TypeError,
+                r"is not an \[int\]"):
+            app_config = af.AppConfig(logging.getLogger(), False)
+            test_args = {
+                "start": 2,
+                "limit": 2,
+                "timer": True,
+                "operator": "+"
+            }
 
-    @unittest.skip("todo")
+            ac.AppContext(app_config, **test_args)
+
     def test_app_context_bad_limit(self):
         """Test with bad [limit] property."""
+        with self.assertRaisesRegex(
+                TypeError,
+                r"is not an \[int\]"):
+            app_config = af.AppConfig(logging.getLogger(), False)
+            test_args = {
+                "start": 2,
+                "end": 2,
+                "timer": True,
+                "operator": "+"
+            }
 
-    @unittest.skip("todo")
+            ac.AppContext(app_config, **test_args)
+
     def test_app_context_bad_options(self):
         """Test with bad [options] property."""
+        with self.assertRaisesRegex(
+                TypeError,
+                r"is not an instance of \[dict\]"):
+            app_config = af.AppConfig(logging.getLogger(), False)
+            test_args = {
+                "start": 1,
+                "end": 2,
+                "limit": 2,
+                "timer": True,
+                "operator": "+"
+            }
+
+            app_context = ac.AppContext(app_config, **test_args)
+            app_context.options = False
 
     @unittest.skip("todo")
     def test_init_app_context(self):

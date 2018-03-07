@@ -29,26 +29,17 @@ class AppContext():
             # clean the positional args.
             [kwargs.pop(key) for key in ['start', 'end', 'limit']]
 
-            # store the option args.
+            # store the optionnal args.
             instance.options = kwargs
 
             # store the singleton in the class property.
             cls.__singleton = instance
 
-        return AppContext.__singleton
+        return cls.__singleton
 
     @classmethod
-    def init_instance(cls, app_config, **kwargs):
-        """Initialisation of the application context instance.
-
-        :param app_config: Application config.
-        :param kwargs: Arguments of the application.
-
-        :type app_config: AppConfig
-        :type kwargs: dict
-        """
-        # store application config
-        inst = cls.__singleton
+    def clearContext(cls):
+        cls.__singleton = None
 
     @property
     def app_config(self):
