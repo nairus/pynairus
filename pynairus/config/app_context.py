@@ -2,10 +2,24 @@
 
 """Application context module."""
 
-from ..config.app_config import AppConfig
+import re
+from ..config import app_config as af
+from ..errors.app_error import ConfigError
 
 # config folder path
-CONFIG_FOLDER_PATH = "pynairus/config/"
+CONFIG_FOLDER_PATH = "pynairus/config"
+
+# regex for detecting the type of config to load
+ALLOWED_FILE_EXTENSION = re.compile(
+    r"[a-zA-Z-_]+\.(?P<extension>ini|json|xml|yml)")
+
+# dictionary for config parse function
+CONFIG_PARSER_DICT = {
+    "ini": af.parse_ini,
+    "json": af.parse_json,
+    "yml": af.parse_yml,
+    "xml": af.parse_xml
+}
 
 
 class AppContext():
@@ -47,7 +61,7 @@ class AppContext():
 
     @app_config.setter
     def app_config(self, app_config):
-        if not isinstance(app_config, AppConfig):
+        if not isinstance(app_config, af.AppConfig):
             raise TypeError(f"{app_config} is not an instance of [AppConfig]")
 
         self._app_config = app_config
@@ -109,6 +123,44 @@ class AppContext():
         self._options = options
 
 
-def init_app_context(*args, **kwargs):
-    """Init the application context."""
-    pass
+def get_config_parser(config_name=None):
+    """Return the parser function for the config chosen.
+
+        :param config_name: the name of the config file.
+
+        :type config_name: str
+
+        :return: function
+
+        :raises ConfigError: In case of config not allowed
+    """
+    if config_name is None:
+        return CONFIG_PARSER_DICT["yml"]
+
+    result = ALLOWED_FILE_EXTENSION.fullmatch(config_name)
+    if result is None:
+        raise ConfigError(f"config [{config_name}] not allowed!")
+
+    ext_file = result.group("extension")
+    return CONFIG_PARSER_DICT[ext_file]
+
+
+def init_app_context(**kwargs):
+    """Init the application context.
+
+    :param kwargs: the application options
+
+    :type kwargs: dict
+
+    :return: AppContext
+    """
+    config_name = kwargs.get("config")
+    config_parser = get_config_parser(config_name=config_name)
+
+    config_path = None
+    if config_name is not None:
+        config_path = f"{CONFIG_FOLDER_PATH}/{config_name}"
+
+    app_config = config_parser(filename=config_path)
+
+    return AppContext(app_config, **kwargs)

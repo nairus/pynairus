@@ -3,6 +3,11 @@
 """Module for application errors."""
 
 
+class ConfigError(Exception):
+    """Raised in case of bad config parsing."""
+    pass
+
+
 class BadArgmentsError(Exception):
     """Raised in case of bad arguments passed."""
     pass
