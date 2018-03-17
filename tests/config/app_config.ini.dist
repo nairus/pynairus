@@ -1,4 +1,4 @@
-; app test ini config file
+; test bad ini config file
 
 [bad_section]
 ; enable log and raising exception (val: yes or no)

@@ -13,6 +13,62 @@ from ..errors.app_error import BadArgmentsError
 CONFIG_FOLDER = "pynairus/config"
 
 
+class LoggerWrapper():
+    """Wrapper for logger."""
+
+    def __init__(self, logger, log_enabled):
+        """Init the attributes.
+
+        :param log_enabled: Activate the logging and raising exception
+        :param logger: The app logger instance
+
+        :type log_enabled: bool
+        :type logger: logging.Logger
+        """
+        if not isinstance(logger, logging.Logger):
+            raise BadArgmentsError(f"logger must be an instance of Logger class: \
+                {type(logger)} given")
+
+        self.logger = logger
+        self.log_enabled = log_enabled
+        logging.raiseExceptions = log_enabled
+
+    def log(self, level, *args, **kwargs):
+        if self.log_enabled:
+            self.logger.log(level, *args, **kwargs)
+
+    def debug(self, *args, **kwargs):
+        if self.log_enabled:
+            self.logger.debug(*args, **kwargs)
+
+    def info(self, *args, **kwargs):
+        if self.log_enabled:
+            self.logger.info(*args, **kwargs)
+
+    def warning(self, *args, **kwargs):
+        if self.log_enabled:
+            self.logger.warning(*args, **kwargs)
+
+    def error(self, *args, **kwargs):
+        if self.log_enabled:
+            # for error level, we log and raise the exception
+            msg, exception = args
+            self.logger.error(msg, exc_info=exception, **kwargs)
+            raise exception
+
+    def critical(self, *args, **kwargs):
+        if self.log_enabled:
+            # for critical level, we log and raise the exception
+            msg, exception = args
+            self.logger.critical(msg, exc_info=exception, **kwargs)
+            raise exception
+
+    def close(self):
+        """Close the handlers of the logger."""
+        for handler in self.logger.handlers:
+            handler.close()
+
+
 class AppLogger():
     """Descriptor for the app logger."""
 
@@ -22,9 +78,10 @@ class AppLogger():
 
     def __set__(self, inst, logger):
         """Setter for the _logger property."""
-        if logger is None:
+        if not isinstance(logger, LoggerWrapper):
             raise BadArgmentsError(
-                f"logger arg must be an instance of Logger class: None given")
+                f"logger must be an instance of LoggerWrapper class: \
+                {type(logger)} given")
 
         inst._logger = logger
 
@@ -42,9 +99,7 @@ class AppConfig():
         :type logger: logging.Logger
         """
         self.log_enabled = log_enabled
-        self.logger = logger
-
-        logging.raiseExceptions = log_enabled
+        self.logger = LoggerWrapper(logger, log_enabled)
 
     @property
     def log_enabled(self):

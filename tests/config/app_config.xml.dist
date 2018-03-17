@@ -1,9 +1,5 @@
 <!--
-Default xml file config.
-Do not modify this this file.
-To use another config, copy it without the `dist` extension and ignore it in you git repos.
-Install the `BeautifulSoup` module to use this config file
-see: https://martin-thoma.com/configuration-files-in-python/#xml_1
+test bad config
 -->
 <?xml version="1.0"?>
 <config>
