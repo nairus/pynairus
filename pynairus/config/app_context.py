@@ -162,5 +162,7 @@ def init_app_context(**kwargs):
         config_path = f"{CONFIG_FOLDER_PATH}/{config_name}"
 
     app_config = config_parser(filename=config_path)
+    if app_config.clear_onstart:
+        app_config.logger.clear()
 
     return AppContext(app_config, **kwargs)

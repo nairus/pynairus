@@ -12,5 +12,6 @@ see: https://www.crummy.com/software/BeautifulSoup/bs4/doc/
         <enabled>false</enabled>
         <config_name>log_config.ini.conf</config_name>
         <logger_name>pymath</logger_name>
+        <clear_onstart>true</clear_onstart>
     </log>
 </config>

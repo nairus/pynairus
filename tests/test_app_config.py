@@ -8,7 +8,7 @@ from pathlib import Path
 import pynairus.config.app_config as py_ac
 from pynairus.errors.app_error import BadArgmentsError
 
-TEST_LOG_FILE_PATH = Path("pynairus/logs/pymath.default.log")
+LOG_FILE_PATH = Path("pynairus/logs/pymath.default.log")
 TEST_DEBUG = "Test DEBUG"
 TEST_INFO = "Test INFO"
 TEST_WARN = "Test WARN"
@@ -24,23 +24,23 @@ class AppConfigTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if TEST_LOG_FILE_PATH.is_file():
-            TEST_LOG_FILE_PATH.unlink()
+        if LOG_FILE_PATH.is_file():
+            LOG_FILE_PATH.unlink()
 
     def tearDown(self):
         if self.app_config is not None:
             self.app_config.logger.close()
             self.app_config = None
 
-        if TEST_LOG_FILE_PATH.is_file():
-            TEST_LOG_FILE_PATH.unlink()
+        if LOG_FILE_PATH.is_file():
+            LOG_FILE_PATH.unlink()
 
     def test_contructor(self):
         """Test the constructor of AppConfig class."""
         with self.assertRaises(
                 BadArgmentsError,
                 msg="1. The class must raise an [BadArgmentsError] exception"):
-            py_ac.AppConfig(None, True)
+            py_ac.AppConfig(None)
 
         app_config = py_ac.AppConfig(logging.getLogger())
         self.assertFalse(app_config.log_enabled,
@@ -49,11 +49,20 @@ class AppConfigTest(unittest.TestCase):
         self.assertIsNotNone(app_config.logger,
                              msg="3. The [logger] property must be set")
 
+        self.assertFalse(app_config.clear_onstart,
+                         msg="4. The [clear_onstart] property must be set")
+
         with self.assertRaisesRegex(
             TypeError,
             r"\[bool\] type expected: \[<class 'str'>\] given"
         ):
-            py_ac.AppConfig(logging.getLogger(), "false")
+            py_ac.AppConfig(logging.getLogger(), log_enabled="false")
+
+        with self.assertRaisesRegex(
+            TypeError,
+            r"\[bool\] type expected: \[<class 'str'>\] given"
+        ):
+            py_ac.AppConfig(logging.getLogger(), clear_onstart="false")
 
     def test_logger_setter(self):
         with self.assertRaises(BadArgmentsError):
@@ -79,8 +88,11 @@ class AppConfigTest(unittest.TestCase):
         self.assertFalse(self.app_config.log_enabled,
                          msg="2. The logs must be disabled")
 
-        self.assertTrue(TEST_LOG_FILE_PATH.exists(),
+        self.assertTrue(LOG_FILE_PATH.exists(),
                         msg="3. The log file musts exist")
+
+        self.assertTrue(self.app_config.clear_onstart,
+                        msg="4. The log file musts be cleared on start")
 
         with self.assertRaisesRegex(
             KeyError,
@@ -101,8 +113,11 @@ class AppConfigTest(unittest.TestCase):
         self.assertFalse(self.app_config.log_enabled,
                          msg="2. The logs must be disabled")
 
-        self.assertTrue(TEST_LOG_FILE_PATH.exists(),
+        self.assertTrue(LOG_FILE_PATH.exists(),
                         msg="3. The log file musts exist")
+
+        self.assertTrue(self.app_config.clear_onstart,
+                        msg="4. The log file musts be cleared on start")
 
         with self.assertRaisesRegex(
             KeyError,
@@ -123,8 +138,11 @@ class AppConfigTest(unittest.TestCase):
         self.assertFalse(self.app_config.log_enabled,
                          msg="2. The logs must be disabled")
 
-        self.assertTrue(TEST_LOG_FILE_PATH.exists(),
+        self.assertTrue(LOG_FILE_PATH.exists(),
                         msg="3. The log file musts exist")
+
+        self.assertTrue(self.app_config.clear_onstart,
+                        msg="4. The log file musts be cleared on start")
 
         with self.assertRaisesRegex(
             KeyError,
@@ -145,8 +163,11 @@ class AppConfigTest(unittest.TestCase):
         self.assertFalse(self.app_config.log_enabled,
                          msg="2. The logs must be disabled")
 
-        self.assertTrue(TEST_LOG_FILE_PATH.exists(),
+        self.assertTrue(LOG_FILE_PATH.exists(),
                         msg="3. The log file musts exist")
+
+        self.assertTrue(self.app_config.clear_onstart,
+                        msg="4. The log file musts be cleared on start")
 
         with self.assertRaisesRegex(
             KeyError,
@@ -171,7 +192,7 @@ class AppConfigTest(unittest.TestCase):
         # free the resource for the other tests
         logger.close()
 
-        with open(TEST_LOG_FILE_PATH) as test_log_file:
+        with open(LOG_FILE_PATH) as test_log_file:
             log_content = test_log_file.read()
             self.assertNotIn(TEST_DEBUG, log_content,
                              msg="1. The debug message must not be written")
@@ -204,7 +225,7 @@ class AppConfigTest(unittest.TestCase):
         # free the resource for the other tests
         logger.close()
 
-        with open(TEST_LOG_FILE_PATH) as test_log_file:
+        with open(LOG_FILE_PATH) as test_log_file:
             log_content = test_log_file.read()
             self.assertIn(TEST_DEBUG, log_content,
                           msg="1. The message must be written")
@@ -231,7 +252,7 @@ class AppConfigTest(unittest.TestCase):
         # free the resource for the other tests
         logger.close()
 
-        with open(TEST_LOG_FILE_PATH) as test_log_file:
+        with open(LOG_FILE_PATH) as test_log_file:
             log_content = test_log_file.read()
             self.assertIn(TEST_ERROR, log_content,
                           msg="2. The error message must be written")
@@ -249,7 +270,35 @@ class AppConfigTest(unittest.TestCase):
         # free the resource for the other tests
         logger.close()
 
-        with open(TEST_LOG_FILE_PATH) as test_log_file:
+        with open(LOG_FILE_PATH) as test_log_file:
             log_content = test_log_file.read()
             self.assertIn(TEST_CRITICAL, log_content,
                           msg="2 The critical message must be written")
+
+    def test_clear_log(self):
+        """Test clear log file content."""
+        # test
+        app_config = py_ac.parse_yml("tests/config/app_config.yml.good.dist")
+        logger = app_config.logger
+        logger.debug(TEST_DEBUG)
+        logger.info(TEST_INFO)
+
+        # free the resource for the other tests
+        logger.close()
+
+        # verify we write into the log file
+        with open(LOG_FILE_PATH) as test_log_file:
+            log_content = test_log_file.read()
+            self.assertIn(TEST_DEBUG, log_content,
+                          msg="1. The message must be written")
+
+            self.assertIn(TEST_INFO, log_content,
+                          msg="2. The info message must be written")
+
+        # clear the log file
+        logger.clear()
+
+        with open(LOG_FILE_PATH) as test_log_file:
+            log_content = test_log_file.read()
+            self.assertIs('', log_content,
+                          msg="3. The log content must an empty string")

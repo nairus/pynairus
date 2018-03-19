@@ -1,6 +1,6 @@
 # PYMATH CHANGELOG
 
-## 2.2.0 (2018-xx-xx)
+## 2.2.0 (2018-03-20)
 
 * Add README, CHANGELOG, LICENSE files
 * Add logging system

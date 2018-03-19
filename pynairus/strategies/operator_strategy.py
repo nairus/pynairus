@@ -171,11 +171,13 @@ class MutliplicationTableStrategy(BaseStrategy):
         :raise: BadArgmentsError in case of bad range
         """
         if start < 1 or start > 10:
-            err_message = f"the start param must be between 1 and 10 included: {start} given"
+            err_message = f"the start param must be between 1 and 10 included: \
+{start} given"
             raise err.BadArgmentsError(err_message)
 
         if end < 1 or end > 10:
-            err_message = f"the end param must be between 1 and 10 included: {end} given"
+            err_message = f"the end param must be between 1 and 10 included: \
+{end} given"
             raise err.BadArgmentsError(err_message)
 
         first = random.randint(start, end)

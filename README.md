@@ -10,6 +10,8 @@ To install the application, copy the `pynairus` package in your `Python` lib fol
 
 ## USAGE
 
+### IN COMMAND LINE
+
 You can use the `run.py` script to launch the application in command line.
 
 To show the help, type :
@@ -21,12 +23,12 @@ python run.py -h
 It will output:
 
 ```bash
-usage: run.py [-h] [-o OPERATOR] [-t] [-l] start end range
+usage: run.py [-h] [-o OPERATOR] [-t] [-l] [-c CONFIG] [-V] start end limit
 
 positional arguments:
   start                 Start of the random range
   end                   End of the random range
-  range                 Number of operations to generate
+  limit                 Limit of operations to generate
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -34,7 +36,12 @@ optional arguments:
                         Add an operator (default: tuple('+', '-'))
   -t, --timer           Add a timer
   -l, --list_operator   Display the list of operators and exit
+  -c CONFIG, --config CONFIG
+                        Specify a config name
+  -V, --version         Display the current version and exit
 ```
+
+### IN PYTHON APP OR JUPYTER NOTEBOOK
 
 You can also run the application by importing the lib like:
 
@@ -42,20 +49,35 @@ You can also run the application by importing the lib like:
 from pynairus import pymath
 
 # for multiplication tables
-pymath.pymath(3, 5, 10, "*")
+pymath.pymath(start=3, end=5, limit=10, operator="*")
 
 # for multiplication with 1 digit factor
-pymath.pymath(10, 999, 10, "1*")
+pymath.pymath(start=10, end=999, limit=10, operator="1*")
 
 # for multiplication with multiple digit factor
-pymath.pymath(10, 999, 10, "n*")
+pymath.pymath(start=10, end=999, limit=10, operator="n*")
 ```
 
-If you want see all the operators available you do like this:
+The `start`, `end` and `limit` args are required. Exception will be raises if there are not present or if there not an `int`.
+The other args are optionals:
+
+1. `operator`: specify an operator, by default a tuple of ('+', '-') is set.
+2. `timer`: launch a timer during the execution of the application. The total time is output at the end of the excecution.
+3. `config`: specify a config name. For example in production we don't want debug log. So you can define a production config and specify it with this arg.
+
+### OPERATORS AVAILABLE
+
+If you want see all the operators available you can do like this:
 
 ```python
 from pynairus.strategies.operator_strategy import display_operators_list
 display_operators_list()
+```
+
+Or in command line, launch:
+
+```bash
+python run.py -l
 ```
 
 It will output something like that:

@@ -68,6 +68,21 @@ class LoggerWrapper():
         for handler in self.logger.handlers:
             handler.close()
 
+    def clear(self):
+        """Clear the log file content."""
+        # free the resourse
+        self.close()
+
+        log_file = None
+        for handler in self.logger.handlers:
+            if isinstance(handler, logging.FileHandler):
+                log_file = handler.baseFilename
+                break
+
+        if log_file is not None:
+            with open(log_file, mode="w") as f:
+                f.truncate()
+
 
 class AppLogger():
     """Descriptor for the app logger."""
@@ -89,7 +104,7 @@ class AppLogger():
 class AppConfig():
     """Application config class."""
 
-    def __init__(self, logger, log_enabled=False):
+    def __init__(self, logger, log_enabled=False, clear_onstart=False):
         """Constructor.
 
         :param log_enabled: Activate the logging and raising exception
@@ -100,6 +115,7 @@ class AppConfig():
         """
         self.log_enabled = log_enabled
         self.logger = LoggerWrapper(logger, log_enabled)
+        self.clear_onstart = clear_onstart
 
     @property
     def log_enabled(self):
@@ -114,6 +130,18 @@ class AppConfig():
             raise TypeError(f"[bool] type expected: [{arg_type}] given")
 
         self._log_enabled = log_enabled
+
+    @property
+    def clear_onstart(self):
+        return self._clear_onstart
+
+    @clear_onstart.setter
+    def clear_onstart(self, clear_onstart):
+        arg_type = type(clear_onstart)
+        if arg_type is not bool:
+            raise TypeError(f"[bool] type expected: [{arg_type}] given")
+
+        self._clear_onstart = clear_onstart
 
     logger = AppLogger()
 
@@ -144,6 +172,7 @@ def parse_yml(filename=None):
 
     log_config = yml_app_config_file.get("log")
     log_enabled = log_config.get("enabled")
+    clear_onstart = log_config.get("clear_onstart")
     logger_name = log_config.get("logger_name")
     log_config_name = log_config.get("config_name")
     log_config_path = get_file_path(f"pynairus/config/{log_config_name}")
@@ -153,7 +182,9 @@ def parse_yml(filename=None):
 
         logging.config.dictConfig(yml_log_config)
         logger = logging.getLogger(logger_name)
-        return AppConfig(logger, log_enabled)
+        return AppConfig(logger,
+                         log_enabled=log_enabled,
+                         clear_onstart=clear_onstart)
 
 
 def parse_ini(filename=None):
@@ -185,11 +216,12 @@ def parse_ini(filename=None):
             raise KeyError("[log] section is missing")
 
         log_enabled = config_parser.getboolean("log", "enabled")
+        clear_onstart = config_parser.getboolean("log", "clear_onstart")
         config_name = config_parser.get("log", "config_name")
         logger_name = config_parser.get("log", "logger_name")
 
         return AppConfig(__init_logger(config_name, logger_name),
-                         log_enabled)
+                         log_enabled, clear_onstart)
 
 
 def parse_json(filename=None):
@@ -216,11 +248,11 @@ def parse_json(filename=None):
         if "log" not in config_datas:
             raise KeyError("[log] section is missing")
 
-        log_enabled, config_name, logger_name = config_datas.get(
-            "log").values()
+        log_enabled, config_name, logger_name, \
+            clear_onstart = config_datas.get("log").values()
 
         return AppConfig(__init_logger(config_name, logger_name),
-                         log_enabled)
+                         log_enabled, clear_onstart)
 
 
 def parse_xml(filename=None):
@@ -249,22 +281,25 @@ def parse_xml(filename=None):
         log_enabled = get_bool_from_str(xml_app_config.log.enabled.string)
         config_name = xml_app_config.log.config_name.string
         logger_name = xml_app_config.log.logger_name.string
+        clear_onstart = get_bool_from_str(
+            xml_app_config.log.clear_onstart.string)
 
         return AppConfig(__init_logger(config_name, logger_name),
-                         log_enabled)
+                         log_enabled, clear_onstart)
 
 
 def __init_logger(config_name, logger_name):
     """Init the app logger with ini config.
-    Internal function, doo not call !
+    Internal function, do not call !
 
-    :param config_name: the name of the config file
-    :param logger_name: the name of the app logger
+    :param config_name:   the name of the config file
+    :param logger_name:   the name of the app logger
 
     :type config_name: str
     :type logger_name: str
 
+
     :return: logging.Logger
     """
-    logging.config.fileConfig(Path(f"pynairus/config/{config_name}"))
+    logging.config.fileConfig(Path(f"{CONFIG_FOLDER}/{config_name}"))
     return logging.getLogger(logger_name)

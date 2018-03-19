@@ -8,6 +8,9 @@
 ; enable log and raising exception (val: yes or no)
 enabled = no
 
+; clear the log file content on start
+clear_onstart = yes
+
 ; name of the log config filename
 config_name = log_config.ini.conf
 

@@ -3,6 +3,7 @@
 """pymath module"""
 
 import timeit
+from .config import app_context as ns_ac
 from .errors.app_error import BadArgmentsError
 from .strategies import operator_strategy as ns_os
 
@@ -46,27 +47,37 @@ def generate_random(start, end, operator):
     return strategy.generate_random(start, end)
 
 
-def pymath(start, end, max_range, operator=None, timer=False):
+def pymath(**kwargs):
     """
-    Launch application of random operations.
-        :param start:     start range.
-        :param end:       end range.
-        :param max_range: max operations to generate.
-        :param operator:  operator.
-        :param timer:     activate the timer.
+    Launch application with random operations.
+        keys required:
+            - start: start range (int).
+            - end:   end range (int).
+            - limit: max operations to generate (int).
 
-        :type start:      int
-        :type end:        int
-        :type max_range:  int
-        :type operator:   str
-        :type timer:      bool
+        keys optionals:
+            - operator:  operator (str).
+            - timer:     activate the timer (bool).
+            - config:    the name the config file (str).
     """
+    # init the context
+    app_context = ns_ac.init_app_context(**kwargs)
+    logger = app_context.app_config.logger
+
+    # init vars
+    start = app_context.start
+    end = app_context.end
+    limit = app_context.limit
+    timer = app_context.options.get("timer")
+    operator = app_context.options.get("operator")
+
     # we clear the awnsers dict
     ANSWERS.clear()
 
     if timer is True:
         # Initialisation of the total time for the answers.
         total_time = 0
+        logger.info(f"timer is activated at {total_time}s.")
 
     # by default we build a tuple of addition and substraction operations
     if operator is None:
@@ -74,17 +85,24 @@ def pymath(start, end, max_range, operator=None, timer=False):
     else:
         operators = (operator, operator)
 
-    numbers_operations = [generate_random(
-        start, end, operators[x % 2]) for x in range(max_range)]
+    numbers_operations = []
+    try:
+        numbers_operations = [generate_random(
+            start, end, operators[x % 2]) for x in range(limit)]
+
+        logger.debug(f"numbers_operations generated: {numbers_operations}")
+    except BadArgmentsError as identifier:
+        logger.error("An error occured during operation generation",
+                     identifier)
 
     score = 0
-
     for numbers in numbers_operations:
         # we generate the key for the answer
         answer_key = (numbers.first, numbers.second, numbers.operator)
 
         # loop until we found an good anwser not already given
         while is_already_answered(answer_key):
+            logger.debug(f"key {answer_key} already exists.")
             # generate another operation
             numbers = generate_random(start, end, numbers.operator)
             # we create another answer key
@@ -99,6 +117,8 @@ def pymath(start, end, max_range, operator=None, timer=False):
         try:
             response = int(input())
         except ValueError as identifier:
+            # log a warning to not stop the application.
+            logger.warning(f"Input error: {identifier}")
             print(f"Erreur de saisie: {identifier}")
         else:
             if timer is True:
@@ -114,7 +134,9 @@ def pymath(start, end, max_range, operator=None, timer=False):
                 ANSWERS[answer_key] = False
                 print(f"Mauvaise réponse, le résulat attendue est: {result}")
 
-        print(f"Ton score est de {score} / {max_range}")
+        print(f"Ton score est de {score} / {limit}")
 
-        if timer is True:
-            print(f"Temps de réponse total : {total_time:04.2f}")
+    logger.info(f"final score: {score}/{limit}")
+    if timer is True:
+        logger.info(f"total time: {total_time:04.2f}")
+        print(f"Temps de réponse total : {total_time:04.2f}")
