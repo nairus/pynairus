@@ -5,6 +5,7 @@
 import unittest
 from pynairus.helpers.file_helper import get_file_path, Path
 from pynairus.helpers.string_helper import get_bool_from_str, STR_BOOL_VALS
+from pynairus.config import CONFIG_FOLDER
 
 
 class FileHelperTest(unittest.TestCase):
@@ -20,6 +21,15 @@ class FileHelperTest(unittest.TestCase):
             "pynairus/config/app_config.yml.dist")
         self.assertIsInstance(config_file, Path,
                               msg="2. the object must be an instance of Path")
+
+        with self.assertRaises(FileNotFoundError,
+                               msg="3. The function must raise an error"):
+            get_file_path(["bad_type_file"])
+
+        filepath = Path(CONFIG_FOLDER, "app_config.yml.dist")
+        config_file = get_file_path(filepath)
+        self.assertIsInstance(config_file, Path,
+                              msg="4. the object must be an instance of Path")
 
 
 class StringHelperTest(unittest.TestCase):

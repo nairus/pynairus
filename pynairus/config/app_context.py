@@ -161,7 +161,7 @@ def init_app_context(**kwargs):
     if config_name is not None:
         config_path = f"{CONFIG_FOLDER_PATH}/{config_name}"
 
-    app_config = config_parser(filename=config_path)
+    app_config = config_parser(filepath=config_path)
     if app_config.clear_onstart:
         app_config.logger.clear()
 

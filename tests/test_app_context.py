@@ -7,18 +7,16 @@ import unittest
 import logging
 from pynairus.config import app_context as ac, app_config as ag
 from pynairus.errors.app_error import ConfigError
+from .config import TEST_CONFIG_FOLDER_PATH
 
 
 class AppContextTest(unittest.TestCase):
     """Class of unit test for app_context module."""
 
-    # test config folder path
-    TEST_CONFIG_FOLDER_PATH = "tests/config"
-
     def setUp(self):
         """Init env for testing this module."""
         self.CONFIG_FOLDER_PATH = ac.CONFIG_FOLDER_PATH
-        ac.CONFIG_FOLDER_PATH = self.TEST_CONFIG_FOLDER_PATH
+        ac.CONFIG_FOLDER_PATH = TEST_CONFIG_FOLDER_PATH
 
     def tearDown(self):
         """Clean the tests."""

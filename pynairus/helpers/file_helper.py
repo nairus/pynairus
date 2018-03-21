@@ -10,14 +10,20 @@ def get_file_path(filepath):
 
     :param filepath: The path of the file.
 
-    :type filepath: str
+    :type filepath: str|Path
 
     :return: Path
 
-    :raises: FileNotFoundError if filepath does not exist
+    :raises: FileNotFoundError if file path does not exist
     """
-    real_filepath = Path(filepath)
-    if not real_filepath.exists():
+    if type(filepath) is str:
+        real_filepath = Path(filepath)
+    elif isinstance(filepath, Path):
+        real_filepath = filepath
+    else:
+        real_filepath = None
+
+    if real_filepath is None or not real_filepath.exists():
         raise FileNotFoundError(f"{filepath} does not exist")
 
     return real_filepath

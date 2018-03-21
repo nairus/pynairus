@@ -2,15 +2,14 @@
 
 """Application config module"""
 
+import os
 from pathlib import Path
 import logging
 import logging.config
 from ..helpers.file_helper import get_file_path
 from ..helpers.string_helper import get_bool_from_str
 from ..errors.app_error import BadArgmentsError
-
-# Defines the default config folder
-CONFIG_FOLDER = "pynairus/config"
+from ..config import CONFIG_FOLDER
 
 
 class LoggerWrapper():
@@ -146,12 +145,12 @@ class AppConfig():
     logger = AppLogger()
 
 
-def parse_yml(filename=None):
+def parse_yml(filepath=None):
     """Parse the yml config file.
 
     :param filename: the path name of the file to parse
 
-    :type filename: str
+    :type filename: str|Path
 
     :return: AppConfig
 
@@ -159,11 +158,11 @@ def parse_yml(filename=None):
     """
     import yaml
 
-    if filename is None:
+    if filepath is None:
         # set the default config file
-        filename = f"{CONFIG_FOLDER}/app_config.yml.dist"
+        filepath = Path(CONFIG_FOLDER, "app_config.yml.dist")
 
-    app_config_path = get_file_path(filename)
+    app_config_path = get_file_path(filepath)
     with open(app_config_path, "r") as ymlfile:
         yml_app_config_file = yaml.load(ymlfile)
 
@@ -175,7 +174,7 @@ def parse_yml(filename=None):
     clear_onstart = log_config.get("clear_onstart")
     logger_name = log_config.get("logger_name")
     log_config_name = log_config.get("config_name")
-    log_config_path = get_file_path(f"pynairus/config/{log_config_name}")
+    log_config_path = get_file_path(Path(CONFIG_FOLDER, log_config_name))
 
     with open(log_config_path, "r") as log_config_file:
         yml_log_config = yaml.load(log_config_file)

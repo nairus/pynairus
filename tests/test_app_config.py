@@ -100,7 +100,7 @@ class AppConfigTest(unittest.TestCase):
             msg="5. The function must raise a [KeyError]"
         ):
             test_filepath = "tests/config/app_config.yml.bad.dist"
-            py_ac.parse_yml(filename=test_filepath)
+            py_ac.parse_yml(filepath=test_filepath)
 
     def test_parse_ini(self):
         """Test of the [parse_ini] function."""
