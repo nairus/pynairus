@@ -203,7 +203,7 @@ def parse_ini(filename=None):
         # copy it without the `dist` extension,
         # ignore it in you git repos
         # and all this function with your config filepath.
-        filename = f"{CONFIG_FOLDER}/app_config.ini.dist"
+        filename = Path(CONFIG_FOLDER, "app_config.ini.dist")
 
     app_config_path = get_file_path(filename)
 
@@ -236,7 +236,7 @@ def parse_json(filename=None):
     """
     if filename is None:
         # set default config file
-        filename = f"{CONFIG_FOLDER}/app_config.json.dist"
+        filename = Path(CONFIG_FOLDER, "app_config.json.dist")
 
     app_config_path = get_file_path(filename)
 
@@ -266,7 +266,7 @@ def parse_xml(filename=None):
     :raises KeyError: if log section not exists
     """
     if filename is None:
-        filename = f"{CONFIG_FOLDER}/app_config.xml.dist"
+        filename = Path(CONFIG_FOLDER, "app_config.xml.dist")
 
     app_config_path = get_file_path(filename)
     with open(app_config_path) as config_file:
@@ -300,5 +300,5 @@ def __init_logger(config_name, logger_name):
 
     :return: logging.Logger
     """
-    logging.config.fileConfig(Path(f"{CONFIG_FOLDER}/{config_name}"))
+    logging.config.fileConfig(Path(CONFIG_FOLDER, config_name))
     return logging.getLogger(logger_name)

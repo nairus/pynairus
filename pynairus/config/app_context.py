@@ -4,11 +4,10 @@
 
 import re
 from pathlib import Path
-from ..config import app_config as af
+from .. import config
+from . import app_config as af
 from ..errors.app_error import ConfigError
 
-# config folder path
-CONFIG_FOLDER_PATH = "pynairus/config"
 
 # regex for detecting the type of config to load
 ALLOWED_FILE_EXTENSION = re.compile(
@@ -160,7 +159,7 @@ def init_app_context(**kwargs):
 
     config_path = None
     if config_name is not None:
-        config_path = Path(CONFIG_FOLDER_PATH, config_name)
+        config_path = Path(config.CONFIG_FOLDER, config_name)
 
     app_config = config_parser(filepath=config_path)
     if app_config.clear_onstart:
