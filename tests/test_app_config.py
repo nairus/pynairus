@@ -125,7 +125,7 @@ class AppConfigTest(unittest.TestCase):
             msg="5. The function must raise a [KeyError]"
         ):
             test_filepath = "tests/config/app_config.ini.dist"
-            py_ac.parse_ini(filename=test_filepath)
+            py_ac.parse_ini(filepath=test_filepath)
 
     def test_parse_json(self):
         """Test of the [parse_json] function."""
@@ -150,7 +150,7 @@ class AppConfigTest(unittest.TestCase):
             msg="5. The function must raise a [KeyError]"
         ):
             test_filepath = "tests/config/app_config.json.dist"
-            py_ac.parse_json(filename=test_filepath)
+            py_ac.parse_json(filepath=test_filepath)
 
     def test_parse_xml(self):
         """Test of the [parse_xml] function."""
@@ -175,7 +175,7 @@ class AppConfigTest(unittest.TestCase):
             msg="5. The function must raise a [KeyError]"
         ):
             test_filepath = "tests/config/app_config.xml.dist"
-            py_ac.parse_xml(filename=test_filepath)
+            py_ac.parse_xml(filepath=test_filepath)
 
     def test_logger_wrapper_disabled(self):
         """Test the wrapper of the logger with log disabled."""

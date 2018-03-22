@@ -148,9 +148,9 @@ class AppConfig():
 def parse_yml(filepath=None):
     """Parse the yml config file.
 
-    :param filename: the path name of the file to parse
+    :param filepath: the path name of the file to parse
 
-    :type filename: str|Path
+    :type filepath: str|Path
 
     :return: AppConfig
 
@@ -186,26 +186,26 @@ def parse_yml(filepath=None):
                          clear_onstart=clear_onstart)
 
 
-def parse_ini(filename=None):
+def parse_ini(filepath=None):
     """Parse the ini config file.
 
-    :param filename: the path name of the file to parse
+    :param filepath: the path name of the file to parse
 
-    :type filename: str
+    :type filepath: str|Path
 
     :return: AppConfig
 
     :raises KeyError: if log section not exists
     """
-    if filename is None:
+    if filepath is None:
         # set the default config file
         # to use another config file,
         # copy it without the `dist` extension,
         # ignore it in you git repos
         # and all this function with your config filepath.
-        filename = Path(CONFIG_FOLDER, "app_config.ini.dist")
+        filepath = Path(CONFIG_FOLDER, "app_config.ini.dist")
 
-    app_config_path = get_file_path(filename)
+    app_config_path = get_file_path(filepath)
 
     with open(app_config_path.absolute()) as f:
         import configparser
@@ -223,22 +223,22 @@ def parse_ini(filename=None):
                          log_enabled, clear_onstart)
 
 
-def parse_json(filename=None):
+def parse_json(filepath=None):
     """Parse the json file.
 
-    :param filename: the path name of the file to parse
+    :param filepath: the path name of the file to parse
 
-    :type filename: str
+    :type filepath: str|Path
 
     :return: AppConfig
 
     :raises KeyError: if log section not exists
     """
-    if filename is None:
+    if filepath is None:
         # set default config file
-        filename = Path(CONFIG_FOLDER, "app_config.json.dist")
+        filepath = Path(CONFIG_FOLDER, "app_config.json.dist")
 
-    app_config_path = get_file_path(filename)
+    app_config_path = get_file_path(filepath)
 
     with open(app_config_path) as json_config_file:
         import json
@@ -254,21 +254,21 @@ def parse_json(filename=None):
                          log_enabled, clear_onstart)
 
 
-def parse_xml(filename=None):
+def parse_xml(filepath=None):
     """Parse the xml file.
 
-    :param filename: the path name of the file to parse
+    :param filepath: the path name of the file to parse
 
-    :type filename: str
+    :type filepath: str|Path
 
     :return: AppConfig
 
     :raises KeyError: if log section not exists
     """
-    if filename is None:
-        filename = Path(CONFIG_FOLDER, "app_config.xml.dist")
+    if filepath is None:
+        filepath = Path(CONFIG_FOLDER, "app_config.xml.dist")
 
-    app_config_path = get_file_path(filename)
+    app_config_path = get_file_path(filepath)
     with open(app_config_path) as config_file:
         from bs4 import BeautifulSoup
         xml_content = config_file.read()

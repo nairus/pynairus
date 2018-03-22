@@ -203,7 +203,7 @@ class AppContextTest(unittest.TestCase):
             start=2, end=4, limit=2)
 
         self.assertIsInstance(app_context, ac.AppContext,
-                              msg="It musts be an instance of [AppContext]")
+                              msg="It musts be an [AppContext] instance")
 
     def test_init_app_context(self):
         """Test the initialization of app_context."""
@@ -211,4 +211,29 @@ class AppContextTest(unittest.TestCase):
             start=2, end=4, limit=2, config="config.yml")
 
         self.assertIsInstance(app_context, ac.AppContext,
-                              msg="It musts be an instance of [AppContext]")
+                              msg="1.1 It musts be an [AppContext] instance")
+        self.assertEqual(2, app_context.start,
+                         "1.2 [start] property musts be correct.")
+        self.assertEqual(4, app_context.end,
+                         "1.3 [end] property musts be correct.")
+        self.assertEqual(2, app_context.limit,
+                         "1.4 [limit] property musts be correct.")
+        self.assertIsNone(app_context.options.get("operator"),
+                          "1.5 [operator] property musts be None.")
+
+        # test changing the context
+        new_app_context = ac.init_app_context(
+            start=1, end=9, limit=4, operator="*", config="config.ini")
+
+        self.assertIs(new_app_context, app_context,
+                      msg="2.1 The instances must be the same.")
+        self.assertEqual(1, app_context.start,
+                         "2.2 [start] property musts be correct.")
+        self.assertEqual(9, app_context.end,
+                         "2.3 [end] property musts be correct.")
+        self.assertEqual(4, app_context.limit,
+                         "2.4 [limit] property musts be correct.")
+        self.assertEqual("*", app_context.options.get("operator"),
+                         "2.5 The operator tuple musts be correct.")
+        self.assertIs(app_context.app_config, new_app_context.app_config,
+                      msg="2.6 The [AppConfig] instances must be the same")

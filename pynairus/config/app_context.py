@@ -52,6 +52,15 @@ class AppContext():
         return cls.__singleton
 
     @classmethod
+    def get_instance(cls):
+        """
+        Return the singleton of AppContext.
+
+        :return AppContext: the singleton of AppContext
+        """
+        return cls.__singleton
+
+    @classmethod
     def clearContext(cls):
         cls.__singleton = None
 
@@ -154,15 +163,30 @@ def init_app_context(**kwargs):
 
     :return: AppContext
     """
-    config_name = kwargs.get("config")
-    config_parser = get_config_parser(config_name=config_name)
+    # if the context doesn't exist, we init the app context.
+    app_context = AppContext.get_instance()
+    if app_context is None:
+        config_name = kwargs.get("config")
+        config_parser = get_config_parser(config_name=config_name)
 
-    config_path = None
-    if config_name is not None:
-        config_path = Path(config.CONFIG_FOLDER, config_name)
+        config_path = None
+        if config_name is not None:
+            config_path = Path(config.CONFIG_FOLDER, config_name)
 
-    app_config = config_parser(filepath=config_path)
-    if app_config.clear_onstart:
-        app_config.logger.clear()
+        app_config = config_parser(filepath=config_path)
+        if app_config.clear_onstart:
+            app_config.logger.clear()
 
-    return AppContext(app_config, **kwargs)
+        return AppContext(app_config, **kwargs)
+
+    # otherwise we update the positional args of the context
+    app_context.start = kwargs.get("start")
+    app_context.end = kwargs.get("end")
+    app_context.limit = kwargs.get("limit")
+
+    # clean the positional args.
+    [kwargs.pop(key) for key in ['start', 'end', 'limit']]
+
+    # update the optional args.
+    app_context.options = kwargs
+    return app_context
