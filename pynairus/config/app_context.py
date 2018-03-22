@@ -163,23 +163,31 @@ def init_app_context(**kwargs):
 
     :return: AppContext
     """
-    # if the context doesn't exist, we init the app context.
+    # if the context doesn't exist, init the app context
     app_context = AppContext.get_instance()
     if app_context is None:
+        # get the config name if specified.
         config_name = kwargs.get("config")
+
+        # get the config_parser function
         config_parser = get_config_parser(config_name=config_name)
 
+        # defines the config path
         config_path = None
         if config_name is not None:
             config_path = Path(config.CONFIG_FOLDER, config_name)
 
+        # parse the config.
         app_config = config_parser(filepath=config_path)
+
+        # clear the log if enabled
         if app_config.clear_onstart:
             app_config.logger.clear()
 
+        # create and return the singleton of AppContext
         return AppContext(app_config, **kwargs)
 
-    # otherwise we update the positional args of the context
+    # otherwise update the positional args of the context
     app_context.start = kwargs.get("start")
     app_context.end = kwargs.get("end")
     app_context.limit = kwargs.get("limit")
@@ -189,4 +197,10 @@ def init_app_context(**kwargs):
 
     # update the optional args.
     app_context.options = kwargs
+
+    # clear the log if enabled
+    app_config = app_context.app_config
+    if app_config.clear_onstart:
+        app_config.logger.clear()
+
     return app_context
