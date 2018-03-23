@@ -1,0 +1,8 @@
+{
+    "log": {
+        "enabled": false,
+        "config_name": "log_config.ini.conf",
+        "logger_name": "pymath",
+        "clear_onstart": true
+    }
+}

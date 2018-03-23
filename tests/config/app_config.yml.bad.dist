@@ -1,0 +1,6 @@
+# YAML app test config file.
+
+bad_section:
+    enabled: true
+    config_name: log_config.yaml
+    logger_name: pymath

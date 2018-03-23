@@ -28,7 +28,8 @@ def get_operators_list():
         (SUB_OPERATOR_KEY, "Key for substraction operation"),
         (MULT_TABLE_OPERATOR_KEY, "Key for table operation (ex. 4*3)"),
         (SIMPLE_MULT_OPERATOR_KEY, "Key for simple mutliplication (ex. 45*2)"),
-        (COMPLEX_MULT_OPERATOR_KEY, "Key for complex multiplication (ex. 12*11)")
+        (COMPLEX_MULT_OPERATOR_KEY,
+            "Key for complex multiplication (ex. 12*11)")
     )
 
 
@@ -170,11 +171,13 @@ class MutliplicationTableStrategy(BaseStrategy):
         :raise: BadArgmentsError in case of bad range
         """
         if start < 1 or start > 10:
-            err_message = f"the start param must be between 1 and 10 included: {start} given"
+            err_message = f"the start param must be between 1 and 10 included: \
+{start} given"
             raise err.BadArgmentsError(err_message)
 
         if end < 1 or end > 10:
-            err_message = f"the end param must be between 1 and 10 included: {end} given"
+            err_message = f"the end param must be between 1 and 10 included: \
+{end} given"
             raise err.BadArgmentsError(err_message)
 
         first = random.randint(start, end)

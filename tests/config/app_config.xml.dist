@@ -1,0 +1,11 @@
+<!--
+test bad config
+-->
+<?xml version="1.0"?>
+<config>
+    <bad_section>
+        <enabled>false</enabled>
+        <config_name>log_config.ini.conf</config_name>
+        <logger_name>pymath</logger_name>
+    </bad_section>
+</config>

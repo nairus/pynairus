@@ -1,0 +1,7 @@
+{
+    "bad_section": {
+        "enabled": false,
+        "config_name": "log_config.ini.conf",
+        "logger_name": "pymath"
+    }
+}

@@ -1,0 +1,18 @@
+; Default application ini config file
+; Do not modify this file.
+; To use another config,
+; Copy it without the `dist` extension and ignore it in you git repos.
+; See https://martin-thoma.com/configuration-files-in-python/#ini
+
+[log]
+; enable log and raising exception (val: yes or no)
+enabled = no
+
+; clear the log file content on start
+clear_onstart = yes
+
+; name of the log config filename
+config_name = log_config.ini.conf
+
+; name of the main logger
+logger_name = pymath

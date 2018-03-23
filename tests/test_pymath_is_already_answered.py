@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """Unit tests module for is_already_answered function."""
 
 import unittest

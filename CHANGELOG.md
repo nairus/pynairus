@@ -1,5 +1,13 @@
 # PYMATH CHANGELOG
 
+## 3.0.0 (2018-03-23)
+
+* Change pymath function signature with an extendable dictionary
+* Add README, CHANGELOG, LICENSE files
+* Add logging system
+* Add list operators and version actions for `run.py` command line script
+* Add multiple config (yml, ini, json, xml)
+
 ## 2.1.2 (2018-01-27)
 
 * Fix saving answer

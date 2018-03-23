@@ -1,0 +1,13 @@
+# Default application yaml config file
+# Do not modify this file.
+# To use another config,
+# Copy it without the `dist` extension and ignore it in you git repos.
+# Install the `pyyaml` module to use this config file
+# See https://martin-thoma.com/configuration-files-in-python/#yaml
+
+
+log:
+    enabled: false
+    config_name: log_config.yaml
+    logger_name: pymath
+    clear_onstart: true

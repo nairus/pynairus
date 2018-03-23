@@ -1,8 +1,9 @@
 # coding: utf-8
+
 """Module list operators action."""
 
 import argparse
-import pynairus.strategies.operator_strategy as ns_os
+from ..strategies import operator_strategy as ns_os
 
 
 class ListOperatorsAction(argparse.Action):

@@ -1,0 +1,6 @@
+# test good config
+log:
+    enabled: true
+    config_name: log_config.yaml
+    logger_name: pymath
+    clear_onstart: true
