@@ -8,7 +8,7 @@ import logging
 from pynairus import config
 from pynairus.config import app_context as ac, app_config as ag
 from pynairus.errors.app_error import ConfigError
-from .config import TEST_CONFIG_FOLDER_PATH
+from tests.config import TEST_CONFIG_FOLDER_PATH
 
 
 class AppContextTest(unittest.TestCase):
