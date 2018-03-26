@@ -7,5 +7,6 @@
 *.yml
 *.ini
 *.xml
+docs
 coverage
 .coverage
