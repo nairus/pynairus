@@ -8,7 +8,7 @@ class ConfigError(Exception):
     pass
 
 
-class BadArgmentsError(Exception):
+class BadArgumentError(Exception):
     """Raised in case of bad arguments passed."""
     pass
 

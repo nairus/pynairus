@@ -4,7 +4,7 @@
 
 import unittest
 from pynairus.pymath import generate_random
-from pynairus.errors.app_error import BadArgmentsError
+from pynairus.errors.app_error import BadArgumentError
 from pynairus.strategies import operator_strategy as ns_os
 
 
@@ -38,6 +38,6 @@ class TestPymathGenerateRandom(unittest.TestCase):
 
     def test_bad_parameters(self):
         """Test raise exception in case of unknown operator."""
-        with self.assertRaises(BadArgmentsError,
-                               msg="BadArgmentsError expected"):
+        with self.assertRaises(BadArgumentError,
+                               msg="BadArgumentError expected"):
             generate_random(10, 99, "x")

@@ -4,7 +4,7 @@
 
 import timeit
 from .config import app_context as ns_ac
-from .errors.app_error import BadArgmentsError
+from .errors.app_error import BadArgumentError
 from .strategies import operator_strategy as ns_os
 
 # Store good anwsers
@@ -41,7 +41,7 @@ def generate_random(start, end, operator):
         :return ComputeNumbers
     """
     if operator not in ns_os.STRATEGIES:
-        raise BadArgmentsError(f"the operator {operator} not exists")
+        raise BadArgumentError(f"the operator {operator} not exists")
 
     strategy = ns_os.STRATEGIES[operator]
     return strategy.generate_random(start, end)
@@ -91,7 +91,7 @@ def pymath(**kwargs):
             start, end, operators[x % 2]) for x in range(limit)]
 
         logger.debug(f"numbers_operations generated: {numbers_operations}")
-    except BadArgmentsError as identifier:
+    except BadArgumentError as identifier:
         logger.error("An error occured during operation generation",
                      identifier)
 

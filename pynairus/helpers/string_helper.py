@@ -1,5 +1,6 @@
 # coding: utf-8
-
+import re
+from ..errors.app_error import BadArgumentError
 
 """Strings helper module."""
 
@@ -16,6 +17,10 @@ STR_BOOL_VALS = {
     "no": False,
     "n": False
 }
+
+# regex for parsing time string.
+TIME_PARSING_REGEX = re.compile(
+    r"((?P<hour>[\d])+h)?(?P<minute>[\d]+)m(?P<second>[\d]+)s")
 
 
 def get_bool_from_str(val):
@@ -35,3 +40,29 @@ def get_bool_from_str(val):
         raise KeyError(f"key [{val}] not exists")
 
     return STR_BOOL_VALS[cleaned_val]
+
+
+def parse_time_string(time):
+    """Parse the time string and return a tuple with 3 values.
+
+    Example: parse_time_string("1h52m34s") will output (1, 52, 34).
+
+    :param time: the string to parse
+
+    :type time: str
+
+    :return: tuple
+
+    :raises BadArgumentError: if the string cannot be parsed
+    """
+
+    result = TIME_PARSING_REGEX.fullmatch(time)
+
+    if result is None:
+        raise BadArgumentError(f"The time [{time}] can't be parsed")
+
+    hour = int(result.group("hour")) if result.group("hour") is not None else 0
+    minute = int(result.group("minute"))
+    second = int(result.group("second"))
+
+    return (hour, minute, second)

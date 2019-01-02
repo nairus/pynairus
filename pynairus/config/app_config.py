@@ -8,7 +8,7 @@ import logging
 import logging.config
 from ..helpers.file_helper import get_file_path
 from ..helpers.string_helper import get_bool_from_str
-from ..errors.app_error import BadArgmentsError
+from ..errors.app_error import BadArgumentError
 from ..config import CONFIG_FOLDER
 
 
@@ -25,7 +25,7 @@ class LoggerWrapper():
         :type logger: logging.Logger
         """
         if not isinstance(logger, logging.Logger):
-            raise BadArgmentsError(f"logger must be an instance of Logger class: \
+            raise BadArgumentError(f"logger must be an instance of Logger class: \
                 {type(logger)} given")
 
         self.logger = logger
@@ -93,7 +93,7 @@ class AppLogger():
     def __set__(self, inst, logger):
         """Setter for the _logger property."""
         if not isinstance(logger, LoggerWrapper):
-            raise BadArgmentsError(
+            raise BadArgumentError(
                 f"logger must be an instance of LoggerWrapper class: \
                 {type(logger)} given")
 

@@ -11,8 +11,8 @@ class AppErrorTest(unittest.TestCase):
     """Unit tests for all errors."""
 
     def test_bad_argments_error(self):
-        """Test the inheritance of BadArgmentsError class."""
-        self.assertIsInstance(py_ae.BadArgmentsError(), Exception)
+        """Test the inheritance of BadArgumentError class."""
+        self.assertIsInstance(py_ae.BadArgumentError(), Exception)
 
     def test_validate_error(self):
         """Test the inheritance of ValidateError class."""

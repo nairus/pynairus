@@ -26,6 +26,11 @@ class OperatorStrategyTest(unittest.TestCase):
         self.assertFalse(compute_number.validate(3))
         self.assertEqual(4, compute_number.get_good_result())
 
+    def test_get_operators_list(self):
+        """Test of the get_operators_list function."""
+        operators = py_os.get_operators_list()
+        self.assertEqual(9, len(operators))
+
     def test_base(self):
         """Test of the BaseStrategy."""
 
@@ -110,11 +115,11 @@ class OperatorStrategyTest(unittest.TestCase):
                               msg="instance of BaseStrategy expected")
 
         err_msg = "the start param must be between 1 and 10 included: 12 given"
-        with self.assertRaisesRegex(py_err.BadArgmentsError, err_msg):
+        with self.assertRaisesRegex(py_err.BadArgumentError, err_msg):
             strategy.generate_random(12, 10)
 
         err_msg = "the end param must be between 1 and 10 included: 11 given"
-        with self.assertRaisesRegex(py_err.BadArgmentsError, err_msg):
+        with self.assertRaisesRegex(py_err.BadArgumentError, err_msg):
             strategy.generate_random(10, 11)
 
         # we generate 100 tests
@@ -180,8 +185,8 @@ class OperatorStrategyTest(unittest.TestCase):
 
     def test_app_strategies(self):
         """Functionnal tests for all app strategies."""
-        self.assertEqual(5, len(py_os.STRATEGIES),
-                         msg="must contains 5 strategies.")
+        self.assertEqual(9, len(py_os.STRATEGIES),
+                         msg="must contains 9 strategies.")
 
         # testing addition strategy
         self.assertIn(py_os.ADD_OPERATOR_KEY, py_os.STRATEGIES)
