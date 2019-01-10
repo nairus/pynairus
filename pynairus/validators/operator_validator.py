@@ -4,7 +4,7 @@
 
 from ..errors.app_error import BadArgumentError
 from ..errors.app_error import ValidateError
-from ..helpers.string_helper import parse_time_string
+from ..helpers.string_helper import parse_time_string, convert_seconds_to_time
 
 
 class BaseValidator():
@@ -104,18 +104,14 @@ class TimeAdditionValidator(BaseValidator):
             first_tuple = parse_time_string(first)
             # parse the second time string
             second_tuple = parse_time_string(second)
-            # add the seconds
-            tmp_secs = first_tuple[2] + second_tuple[2]
-            # add the minutes
-            tmp_minutes = (tmp_secs // 60) + first_tuple[1] + second_tuple[1]
-            # calculate the minutes and the seconds
-            minutes = tmp_minutes % 60
-            secs = tmp_secs % 60
-            # add and calculate the hours
-            tmp_hours = (tmp_minutes // 60) + first_tuple[0] + second_tuple[0]
-            hours = f"{tmp_hours}h" if tmp_hours > 0 else ""
-            # return the final result
-            return f"{hours}{minutes}m{secs}s"
+            # add the hours, minutes and seconds
+            hours = first_tuple[0] + second_tuple[0]
+            mins = first_tuple[1] + second_tuple[1]
+            secs = first_tuple[2] + second_tuple[2]
+            # convert in seconds
+            timestamp = (hours * 60 * 60) + (mins * 60) + secs
+            # return the result
+            return convert_seconds_to_time(timestamp)
         except BadArgumentError as error:
             raise ValidateError(
                 f"An error occured while validating: {first} + {second}",
@@ -155,18 +151,8 @@ class TimeSubstractionValidator(BaseValidator):
                 raise ValidateError(
                     f"The first time ({first}) isn't greater than {second}")
 
-            # substract the seconds
-            result = first_seconds - second_seconds
-
-            # calculate the hour and the minutes and seconds
-            tmp_hour = result // (60 * 60)
-            hour = f"{tmp_hour}h" if tmp_hour > 0 else ""
-            tmp_minutes = result % (60 * 60)
-            min = tmp_minutes // 60
-            secs = tmp_minutes % 60
-
             # return the final result
-            return f"{hour}{min}m{secs}s"
+            return convert_seconds_to_time(first_seconds - second_seconds)
         except BadArgumentError as error:
             raise ValidateError(
                 f"An error occured while validating: {first} - {second}",
@@ -193,8 +179,8 @@ class DivisionValidator(BaseValidator):
             message = f"The first number ({first}) isn't greater than {second}"
             raise ValidateError(message)
 
-        result = first // second
-        modulo = first % second
-        rest = f"r{modulo}" if modulo > 0 else ""
+        quotient = first // second
+        tmp_rest = first % second
+        rest = f"r{tmp_rest}" if tmp_rest > 0 else ""
 
-        return f"{result}{rest}"
+        return f"{quotient}{rest}"

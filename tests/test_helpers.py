@@ -75,9 +75,20 @@ class StringHelperTest(unittest.TestCase):
         """Test the [parse_time_string] function."""
         self.assertTupleEqual((1, 24, 3), sh.parse_time_string("1h24m03s"))
         self.assertTupleEqual((0, 54, 25), sh.parse_time_string("54m25s"))
-
-        with self.assertRaisesRegex(BadArgumentError, "45s"):
-            sh.parse_time_string("45s")
+        self.assertTupleEqual((0, 0, 45), sh.parse_time_string("45s"))
 
         with self.assertRaisesRegex(BadArgumentError, "23m"):
             sh.parse_time_string("23m")
+
+    def test_convert_seconds_to_time(self):
+        """Test the [convert_seconds_to_time] function."""
+        self.assertEqual("4h06m24s", sh.convert_seconds_to_time(14784))
+        self.assertEqual("10m06s", sh.convert_seconds_to_time(606))
+
+        # case timestamp > a day
+        with self.assertRaises(BadArgumentError):
+            sh.convert_seconds_to_time(25 * 60 * 60)
+
+        # case timestamp < 1 second
+        with self.assertRaises(BadArgumentError):
+            sh.convert_seconds_to_time(0)

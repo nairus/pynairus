@@ -3,6 +3,7 @@
 """Module of strategies for random mathematical operation generation."""
 
 import random
+from ..helpers.string_helper import convert_seconds_to_time
 from ..validators import operator_validator as py_ov
 from ..errors import app_error as err
 
@@ -12,7 +13,7 @@ SUB_OPERATOR_KEY = "-"
 MULT_TABLE_OPERATOR_KEY = "*"
 SIMPLE_MULT_OPERATOR_KEY = "1*"
 COMPLEX_MULT_OPERATOR_KEY = "n*"
-SIMPLE_DIV_OPERATOR_KEY = "1/"
+SIMPLE_DIV_OPERATOR_KEY = "/"
 COMPLEX_DIV_OPERATOR_KEY = "n/"
 TIME_ADD_KEY = "t+"
 TIME_SUB_KEY = "t-"
@@ -256,28 +257,6 @@ class ComplexMutliplicationStrategy(BaseStrategy):
                               self.validator)
 
 
-class TimeAdditionStrategy(BaseStrategy):
-    """Implementation of time addition strategy
-    Ex. 51m21s + 25m42s = 1h17m3s
-
-    :param validator: the validator instance.
-
-    :type validator: TimeAdditionValidator
-    """
-    pass
-
-
-class TimeSubstractionStrategy(BaseStrategy):
-    """Implementation of time subtraction strategy
-    Ex. 51m21s - 25m42s = 25m39
-
-    :param validator: the validator instance.
-
-    :type validator: TimeSubstractionValidator
-    """
-    pass
-
-
 class SimpleDivisionStrategy(BaseStrategy):
     """Implementation of simple division strategy
     Ex. 50 / 3 = 16r2
@@ -286,7 +265,25 @@ class SimpleDivisionStrategy(BaseStrategy):
 
     :type validator: DivisionValidator
     """
-    pass
+
+    def generate_random(self, start, end):
+        """Implementation of random generation
+        for complex multiplication strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+        """
+        first = random.randint(start, end)
+        second = random.randint(1, 9)
+        return ComputeNumbers(first,
+                              second,
+                              SIMPLE_DIV_OPERATOR_KEY,
+                              self.validator)
 
 
 class ComplexDivisionStrategy(BaseStrategy):
@@ -297,7 +294,89 @@ class ComplexDivisionStrategy(BaseStrategy):
 
     :type validator: DivisionValidator
     """
-    pass
+
+    def generate_random(self, start, end):
+        """Implementation of random generation
+        for complex multiplication strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+        """
+        first = random.randint(start, end)
+        second = random.randint(2, first)
+        return ComputeNumbers(first,
+                              second,
+                              SIMPLE_DIV_OPERATOR_KEY,
+                              self.validator)
+
+
+class TimeAdditionStrategy(BaseStrategy):
+    """Implementation of time addition strategy
+    Ex. 51m21s + 25m42s = 1h17m3s
+
+    :param validator: the validator instance.
+
+    :type validator: TimeAdditionValidator
+    """
+
+    def generate_random(self, start, end):
+        """Implementation of random generation
+        for complex multiplication strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+        """
+        first = convert_seconds_to_time(random.randint(start, end))
+        second = convert_seconds_to_time(random.randint(start, end))
+        return ComputeNumbers(first,
+                              second,
+                              ADD_OPERATOR_KEY,
+                              self.validator)
+
+
+class TimeSubstractionStrategy(BaseStrategy):
+    """Implementation of time subtraction strategy
+    Ex. 51m21s - 25m42s = 25m39
+
+    :param validator: the validator instance.
+
+    :type validator: TimeSubstractionValidator
+    """
+
+    def generate_random(self, start, end):
+        """Implementation of random generation
+        for complex multiplication strategy.
+
+        :param start: start range
+        :param end:   end range
+
+        :type start:  int
+        :type end:    int
+
+        :return: ComputeNumbers
+        """
+        first = random.randint(start, end)
+        second = random.randint(start, end)
+
+        # switch the numbers if the second number
+        # is greater than the first number.
+        if second > first:
+            first, second = second, first
+
+        return ComputeNumbers(convert_seconds_to_time(first),
+                              convert_seconds_to_time(second),
+                              SUB_OPERATOR_KEY,
+                              self.validator)
 
 
 # Strategies dictionnary.
