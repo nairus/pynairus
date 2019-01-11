@@ -373,6 +373,9 @@ class TimeSubstractionStrategy(BaseStrategy):
         if second > first:
             first, second = second, first
 
+        if first == second:
+            second = random.randint(start, first)
+
         return ComputeNumbers(convert_seconds_to_time(first),
                               convert_seconds_to_time(second),
                               SUB_OPERATOR_KEY,

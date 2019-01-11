@@ -29,6 +29,9 @@ class ValidatorsTest(unittest.TestCase):
         self.assertTrue(validator.validate(2, 1, 1))
         self.assertFalse(validator.validate(2, 2, 1))
 
+        with self.assertRaises(ValueError):
+            validator.validate("a", 1, 1)
+
     def test_substraction_validate(self):
         """Test the SubstractionValidator.validate method."""
         validator = ov.SubstractionValidator()
@@ -36,12 +39,18 @@ class ValidatorsTest(unittest.TestCase):
         self.assertTrue(validator.validate(2, 3, 1))
         self.assertFalse(validator.validate(2, 2, 1))
 
+        with self.assertRaises(ValueError):
+            validator.validate("a", 1, 1)
+
     def test_multiplication_validate(self):
         """Test the MultiplicationValidator.validate method."""
         validator = ov.MultiplicationValidator()
         self.assertIsInstance(validator, ov.BaseValidator)
         self.assertTrue(validator.validate(9, 3, 3))
         self.assertFalse(validator.validate(8, 3, 3))
+
+        with self.assertRaises(ValueError):
+            validator.validate("a", 2, 2)
 
     def test_division_validate(self):
         """Test the DivisionValidator.validate method."""

@@ -115,12 +115,7 @@ def pymath(**kwargs):
             start_time = timeit.default_timer()
 
         try:
-            response = int(input())
-        except ValueError as identifier:
-            # log a warning to not stop the application.
-            logger.warning(f"Input error: {identifier}")
-            print(f"Erreur de saisie: {identifier}")
-        else:
+            response = input()
             if timer is True:
                 response_time = timeit.default_timer() - start_time
                 print(f"Temps de réponse : {response_time:04.2f} secondes")
@@ -133,6 +128,10 @@ def pymath(**kwargs):
             else:
                 ANSWERS[answer_key] = False
                 print(f"Mauvaise réponse, le résulat attendue est: {result}")
+        except ValueError as identifier:
+            # log a warning to not stop the application.
+            logger.warning(f"Input error: {identifier}")
+            print(f"Erreur de saisie: {identifier}")
 
         print(f"Ton score est de {score} / {limit}")
 

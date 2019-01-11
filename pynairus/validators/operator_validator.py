@@ -17,18 +17,26 @@ class BaseValidator():
             :param first:  the first number of the operation
             :param second: the second number of the operation
 
-            :type answer: int
-            :type first:  int
-            :type second: int
+            :type answer: int|str
+            :type first:  int|str
+            :type second: int|str
 
             :return: bool
         """
-        return answer == self.get_result(first, second)
+        return self.convert_answer(answer) == self.get_result(first, second)
 
     def get_result(self, first, second):
         """Return the good result for the operation."""
         message = f"method not implemented for class {self.__class__.__name__}"
         raise ValidateError(message)
+
+    def convert_answer(self, answer):
+        """Convert the type of the answer.
+
+            By default no conversion is made.
+            Override this method to do one.
+        """
+        return answer
 
 
 class AdditionValidator(BaseValidator):
@@ -47,6 +55,10 @@ class AdditionValidator(BaseValidator):
         """
         return first + second
 
+    def convert_answer(self, answer):
+        """Convert the type of the answer."""
+        return int(answer)
+
 
 class SubstractionValidator(BaseValidator):
     """Validator for substraction."""
@@ -64,6 +76,10 @@ class SubstractionValidator(BaseValidator):
         """
         return first - second
 
+    def convert_answer(self, answer):
+        """Convert the type of the answer."""
+        return int(answer)
+
 
 class MultiplicationValidator(BaseValidator):
     """Validator for multiplication."""
@@ -80,6 +96,10 @@ class MultiplicationValidator(BaseValidator):
             :return: int
         """
         return first * second
+
+    def convert_answer(self, answer):
+        """Convert the type of the answer."""
+        return int(answer)
 
 
 class TimeAdditionValidator(BaseValidator):

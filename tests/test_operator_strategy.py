@@ -261,7 +261,8 @@ class OperatorStrategyTest(unittest.TestCase):
         for i in range(100):
             test_num = i + 1
 
-            numbers = strategy.generate_random(60, 600)
+            # generate timestamp between 1 minute and one hour
+            numbers = strategy.generate_random(60, 3600)
 
             self.assertIs(type(numbers.first), str,
                           f"{test_num}.1 The 1st num. has to be a string")
@@ -292,7 +293,8 @@ class OperatorStrategyTest(unittest.TestCase):
         for i in range(100):
             test_num = i + 1
 
-            numbers = strategy.generate_random(60, 600)
+            # generate timestamp between 1 minute and one hour
+            numbers = strategy.generate_random(60, 3600)
 
             self.assertIs(type(numbers.first), str,
                           f"{test_num}.1 The 1st num. has to be a string")
@@ -309,7 +311,7 @@ class OperatorStrategyTest(unittest.TestCase):
             second_t = (second_h * 60 * 60) + (second_m * 60) + second_s
 
             self.assertTrue(first_t > second_t,
-                            f"{test_num}.3 The first number has to be greater than the second.")
+                            f"{test_num}.3 The first number [{numbers.first}] has to be greater than the second [{numbers.second}].")
             result_expected = convert_seconds_to_time(first_t - second_t)
             self.assertEqual(result_expected, numbers.get_good_result(),
                              f"{test_num}.4 The result expected is not ok")
