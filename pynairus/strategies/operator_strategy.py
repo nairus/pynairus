@@ -10,11 +10,11 @@ from ..errors import app_error as err
 # Constants for the keys of the dictionnary strategies.
 ADD_OPERATOR_KEY = "+"
 SUB_OPERATOR_KEY = "-"
-MULT_TABLE_OPERATOR_KEY = "*"
-SIMPLE_MULT_OPERATOR_KEY = "1*"
-COMPLEX_MULT_OPERATOR_KEY = "n*"
-SIMPLE_DIV_OPERATOR_KEY = "/"
-COMPLEX_DIV_OPERATOR_KEY = "n/"
+MULT_TABLE_OPERATOR_KEY = "×"
+SIMPLE_MULT_OPERATOR_KEY = "1×"
+COMPLEX_MULT_OPERATOR_KEY = "n×"
+SINGLE_DIV_OPERATOR_KEY = "÷"
+DOUBLE_DIV_OPERATOR_KEY = "2÷"
 TIME_ADD_KEY = "t+"
 TIME_SUB_KEY = "t-"
 
@@ -34,12 +34,13 @@ def get_operators_list():
     return (
         (ADD_OPERATOR_KEY, "Key for addition operation"),
         (SUB_OPERATOR_KEY, "Key for substraction operation"),
-        (MULT_TABLE_OPERATOR_KEY, "Key for table operation (ex. 4*3)"),
-        (SIMPLE_MULT_OPERATOR_KEY, "Key for simple mutliplication (ex. 45*2)"),
+        (MULT_TABLE_OPERATOR_KEY, "Key for table operation (ex. 4 × 3)"),
+        (SIMPLE_MULT_OPERATOR_KEY,
+            "Key for simple mutliplication (ex. 45 × 2)"),
         (COMPLEX_MULT_OPERATOR_KEY,
-            "Key for complex multiplication (ex. 12*11)"),
-        (SIMPLE_DIV_OPERATOR_KEY, "Key for simple division (ex. 35/5)"),
-        (COMPLEX_DIV_OPERATOR_KEY, "Key for complex division (ex. 234/25)"),
+            "Key for complex multiplication (ex. 12 × 11)"),
+        (SINGLE_DIV_OPERATOR_KEY, "Key for single divisor (ex. 35 ÷ 5)"),
+        (DOUBLE_DIV_OPERATOR_KEY, "Key for double divisor (ex. 234 ÷ 25)"),
         (TIME_ADD_KEY, "Key for time addition (ex. 34m24s + 54m31s)"),
         (TIME_SUB_KEY, "Key for time substraction (ex. 54m48s - 45m21s)")
     )
@@ -184,12 +185,12 @@ class MutliplicationTableStrategy(BaseStrategy):
         :raise: BadArgumentError in case of bad range
         """
         if start < 1 or start > 10:
-            err_message = f"the start param must be between 1 and 10 included: \
+            err_message = f"the start param has to be between 1 and 10 included: \
 {start} given"
             raise err.BadArgumentError(err_message)
 
         if end < 1 or end > 10:
-            err_message = f"the end param must be between 1 and 10 included: \
+            err_message = f"the end param has to be between 1 and 10 included: \
 {end} given"
             raise err.BadArgumentError(err_message)
 
@@ -257,9 +258,9 @@ class ComplexMutliplicationStrategy(BaseStrategy):
                               self.validator)
 
 
-class SimpleDivisionStrategy(BaseStrategy):
+class SingleDivisorStrategy(BaseStrategy):
     """Implementation of simple division strategy
-    Ex. 50 / 3 = 16r2
+    Ex. 50 ÷ 3 = 16r2
 
     :param validator: the validator instance.
 
@@ -278,15 +279,20 @@ class SimpleDivisionStrategy(BaseStrategy):
 
         :return: ComputeNumbers
         """
-        first = random.randint(start, end)
-        second = random.randint(1, 9)
-        return ComputeNumbers(first,
-                              second,
-                              SIMPLE_DIV_OPERATOR_KEY,
+        # generate the operator numbers
+        dividend = random.randint(start, end)
+        divisor = random.randint(2, 9)
+        # while the divisor is greater than the dividend
+        # we generate another random integer.
+        while divisor > dividend:
+            dividend = random.randint(start, end)
+        return ComputeNumbers(dividend,
+                              divisor,
+                              SINGLE_DIV_OPERATOR_KEY,
                               self.validator)
 
 
-class ComplexDivisionStrategy(BaseStrategy):
+class DoubleDivisorStrategy(BaseStrategy):
     """Implementation of time subtraction strategy
     Ex. 50 / 20 = 2r10
 
@@ -307,11 +313,17 @@ class ComplexDivisionStrategy(BaseStrategy):
 
         :return: ComputeNumbers
         """
-        first = random.randint(start, end)
-        second = random.randint(2, first)
-        return ComputeNumbers(first,
-                              second,
-                              SIMPLE_DIV_OPERATOR_KEY,
+        # generate the operator numbers
+        dividend = random.randint(start, end)
+        divisor = random.randint(10, 99)
+        # while the divisor is greater than the dividend
+        # we generate another random integer.
+        while divisor > dividend:
+            dividend = random.randint(start, end)
+
+        return ComputeNumbers(dividend,
+                              divisor,
+                              SINGLE_DIV_OPERATOR_KEY,
                               self.validator)
 
 
@@ -390,8 +402,8 @@ STRATEGIES = {
     MULT_TABLE_OPERATOR_KEY: MutliplicationTableStrategy(MULT_VALIDATOR),
     SIMPLE_MULT_OPERATOR_KEY: SimpleMutliplicationStrategy(MULT_VALIDATOR),
     COMPLEX_MULT_OPERATOR_KEY: ComplexMutliplicationStrategy(MULT_VALIDATOR),
-    SIMPLE_DIV_OPERATOR_KEY: SimpleDivisionStrategy(py_ov.DivisionValidator()),
-    COMPLEX_DIV_OPERATOR_KEY: ComplexDivisionStrategy(py_ov.DivisionValidator()),
+    SINGLE_DIV_OPERATOR_KEY: SingleDivisorStrategy(py_ov.DivisionValidator()),
+    DOUBLE_DIV_OPERATOR_KEY: DoubleDivisorStrategy(py_ov.DivisionValidator()),
     TIME_ADD_KEY: TimeAdditionStrategy(py_ov.TimeAdditionValidator()),
     TIME_SUB_KEY: TimeSubstractionStrategy(py_ov.TimeSubstractionValidator())
 }

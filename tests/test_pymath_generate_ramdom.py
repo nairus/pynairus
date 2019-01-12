@@ -23,17 +23,37 @@ class TestPymathGenerateRandom(unittest.TestCase):
 
     def test_mult_table_generation(self):
         """Test de la génération de multiplication table."""
-        strategy = generate_random(1, 3, '*')
+        strategy = generate_random(1, 3, '×')
         self.assertIsInstance(strategy, ns_os.ComputeNumbers)
 
     def test_simple_mult_generation(self):
         """Test the simple multiplication generation."""
-        strategy = generate_random(10, 99, '1*')
+        strategy = generate_random(10, 99, '1×')
         self.assertIsInstance(strategy, ns_os.ComputeNumbers)
 
     def test_complex_mult_generation(self):
         """Test the complex multiplication generation."""
-        strategy = generate_random(10, 99, 'n*')
+        strategy = generate_random(10, 99, 'n×')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
+
+    def test_simple_div_generation(self):
+        """Test the simple division generation."""
+        strategy = generate_random(10, 99, '÷')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
+
+    def test_complex_div_generation(self):
+        """Test the complex division generation."""
+        strategy = generate_random(10, 99, '2÷')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
+
+    def test_time_add_generation(self):
+        """Test time addition generation."""
+        strategy = generate_random(10, 99, 't+')
+        self.assertIsInstance(strategy, ns_os.ComputeNumbers)
+
+    def test_time_sub_generation(self):
+        """Test time substraction generation."""
+        strategy = generate_random(10, 99, 't-')
         self.assertIsInstance(strategy, ns_os.ComputeNumbers)
 
     def test_bad_parameters(self):

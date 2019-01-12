@@ -86,11 +86,11 @@ It will output something like that:
 Available Operators list:
 (('+', 'Key for addition operation'),
  ('-', 'Key for substraction operation'),
- ('*', 'Key for table operation (ex. 4*3)'),
- ('1*', 'Key for simple mutliplication (ex. 45*2)'),
- ('n*', 'Key for complex multiplication (ex. 12*11)')),
- ('1/', 'Key for simple division (ex. 35/5)'),
- ('n/', 'Key for complex division (ex. 234/25)'),
- ('t+', 'Key for time addition (ex. 45m21s + 54m48s)'),
+ ('×', 'Key for table operation (ex. 4 × 3)'),
+ ('1×', 'Key for simple mutliplication (ex. 45 × 2)'),
+ ('n×', 'Key for complex multiplication (ex. 12 × 11)'),
+ ('÷', 'Key for single divisor (ex. 35 ÷ 5)'),
+ ('2÷', 'Key for double divisor (ex. 234 ÷ 25)'),
+ ('t+', 'Key for time addition (ex. 34m24s + 54m31s)'),
  ('t-', 'Key for time substraction (ex. 54m48s - 45m21s)'))
 ```

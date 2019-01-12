@@ -66,14 +66,14 @@ class OperatorStrategyTest(unittest.TestCase):
                                   f"{test_num}.1 instance of ComputeNumbers expected")
 
             self.assertTrue(10 <= numbers.first <= 99,
-                            f"{test_num}.2 the left number must be between 10 and 99")
+                            f"{test_num}.2 the left number has to be between 10 and 99")
 
             self.assertTrue(10 <= numbers.second <= 99,
-                            f"{test_num}.3 the right number must be between 10 and 99")
+                            f"{test_num}.3 the right number has to be between 10 and 99")
 
             result = numbers.first + numbers.second
             self.assertEqual(result, numbers.get_good_result(),
-                             f"{test_num}.4 the result must be correct")
+                             f"{test_num}.4 the result has to be correct")
 
     def test_substraction(self):
         """Test of the SubstractionStrategy."""
@@ -95,17 +95,17 @@ class OperatorStrategyTest(unittest.TestCase):
                                   f"{test_num}.1 instance of ComputeNumbers expected")
 
             self.assertTrue(10 <= numbers.first <= 99,
-                            f"{test_num}.2 the left number must be between 10 and 99")
+                            f"{test_num}.2 the left number has to be between 10 and 99")
 
             self.assertTrue(10 <= numbers.second <= 99,
-                            f"{test_num}.3 the right number must be between 10 and 99")
+                            f"{test_num}.3 the right number has to be between 10 and 99")
 
             self.assertTrue(numbers.first >= numbers.second,
-                            f"{test_num}.4 the left number must be >= than the right number")
+                            f"{test_num}.4 the left number has to be >= than the right number")
 
             result = numbers.first - numbers.second
             self.assertEqual(result, numbers.get_good_result(),
-                             f"{test_num}.5 the result must be correct")
+                             f"{test_num}.5 the result has to be correct")
 
     def test_mutliplication_table(self):
         """Test of MutliplicationTableStrategy."""
@@ -115,11 +115,11 @@ class OperatorStrategyTest(unittest.TestCase):
         self.assertIsInstance(strategy, py_os.BaseStrategy,
                               msg="instance of BaseStrategy expected")
 
-        err_msg = "the start param must be between 1 and 10 included: 12 given"
+        err_msg = "the start param has to be between 1 and 10 included: 12 given"
         with self.assertRaisesRegex(py_err.BadArgumentError, err_msg):
             strategy.generate_random(12, 10)
 
-        err_msg = "the end param must be between 1 and 10 included: 11 given"
+        err_msg = "the end param has to be between 1 and 10 included: 11 given"
         with self.assertRaisesRegex(py_err.BadArgumentError, err_msg):
             strategy.generate_random(10, 11)
 
@@ -129,14 +129,14 @@ class OperatorStrategyTest(unittest.TestCase):
 
             numbers = strategy.generate_random(1, 4)
             self.assertTrue(1 <= numbers.first <= 4,
-                            f"{test_num}.1 the first number must be between 1 and 4")
+                            f"{test_num}.1 the first number has to be between 1 and 4")
 
             self.assertTrue(1 <= numbers.second <= 10,
-                            f"{test_num}.2 the second number must be between 1 and 10")
+                            f"{test_num}.2 the second number has to be between 1 and 10")
 
             result = numbers.first * numbers.second
             self.assertEqual(result, numbers.get_good_result(),
-                             f"{test_num}.3 the result must be correct")
+                             f"{test_num}.3 the result has to be correct")
 
     def test_simple_multiplication(self):
         """Test of SimpleMutliplicationStrategy."""
@@ -152,14 +152,14 @@ class OperatorStrategyTest(unittest.TestCase):
 
             numbers = strategy.generate_random(10, 99)
             self.assertTrue(10 <= numbers.first <= 99,
-                            f"{test_num}.1 the first number must be between 10 and 99")
+                            f"{test_num}.1 the first number has to be between 10 and 99")
 
             self.assertTrue(1 <= numbers.second < 10,
-                            f"{test_num}.2 the second number must be between 1 and 9")
+                            f"{test_num}.2 the second number has to be between 1 and 9")
 
             result = numbers.first * numbers.second
             self.assertEqual(result, numbers.get_good_result(),
-                             f"{test_num}.3 the result must be correct")
+                             f"{test_num}.3 the result has to be correct")
 
     def test_complex_multiplication(self):
         """Test of ComplexMutliplicationStrategy."""
@@ -175,37 +175,40 @@ class OperatorStrategyTest(unittest.TestCase):
 
             numbers = strategy.generate_random(10, 99)
             self.assertTrue(10 <= numbers.first <= 99,
-                            f"{test_num}.1 the first number must be between 10 and 99")
+                            f"{test_num}.1 the first number has to be between 10 and 99")
 
             self.assertTrue(10 <= numbers.second <= 99,
-                            f"{test_num}.2 the second number must be between 10 and 99")
+                            f"{test_num}.2 the second number has to be between 10 and 99")
 
             result = numbers.first * numbers.second
             self.assertEqual(result, numbers.get_good_result(),
-                             f"{test_num}.3 the result must be correct")
+                             f"{test_num}.3 the result has to be correct")
 
-    def test_simple_division(self):
-        """Test of SimpleDivisionStrategy."""
-        strategy = py_os.SimpleDivisionStrategy(
+    def test_single_divisor(self):
+        """Test of SingleDivisorStrategy."""
+        strategy = py_os.SingleDivisorStrategy(
             py_ov.DivisionValidator())
 
         self.assertIsInstance(strategy, py_os.BaseStrategy,
                               msg="instance of BaseStrategy expected")
 
-        # we generate 100 tests
-        for i in range(100):
+        # we generate 1000 tests
+        for i in range(1000):
             test_num = i + 1
 
-            numbers = strategy.generate_random(10, 99)
+            numbers = strategy.generate_random(1, 99)
 
             self.assertIsNotNone(
                 numbers, f"{test_num}.1 the numbers has not to be None")
 
-            self.assertTrue(10 <= numbers.first <= 99,
-                            f"{test_num}.2 the first number must be between 10 and 99")
+            self.assertTrue(1 <= numbers.first <= 99,
+                            f"{test_num}.2 the dividend has to be between 1 and 99")
 
-            self.assertTrue(1 <= numbers.second < 10,
-                            f"{test_num}.3 the second number must be between 1 and 9")
+            self.assertTrue(1 < numbers.second < 10,
+                            f"{test_num}.3 the divisor has to be between 2 and 9: {numbers.second} given")
+
+            self.assertTrue(numbers.second <= numbers.first,
+                            f"{test_num}.4 the dividend has to be greater than equal the divisor: {numbers} given.")
 
             # calculate the result expected
             quotient = numbers.first // numbers.second
@@ -215,30 +218,33 @@ class OperatorStrategyTest(unittest.TestCase):
 
             # verify the result calculated by the strategy
             self.assertEqual(result, numbers.get_good_result(),
-                             f"{test_num}.4 The result expected is not ok")
+                             f"{test_num}.5 The result expected is not ok")
 
-    def test_complex_division(self):
-        """Test of ComplexDivisionStrategy."""
-        strategy = py_os.ComplexDivisionStrategy(
+    def test_double_divisor(self):
+        """Test of DoubleDivisorStrategy."""
+        strategy = py_os.DoubleDivisorStrategy(
             py_ov.DivisionValidator())
 
         self.assertIsInstance(strategy, py_os.BaseStrategy,
                               msg="instance of BaseStrategy expected")
 
-        # we generate 100 tests
-        for i in range(100):
+        # we generate 1000 tests
+        for i in range(1000):
             test_num = i + 1
 
-            numbers = strategy.generate_random(10, 99)
+            numbers = strategy.generate_random(10, 999)
 
             self.assertIsNotNone(
                 numbers, f"{test_num}.1 the numbers has not to be None")
 
-            self.assertTrue(10 <= numbers.first <= 99,
-                            f"{test_num}.2 the first number must be between 10 and 99")
+            self.assertTrue(10 <= numbers.first <= 999,
+                            f"{test_num}.2 the dividend has to be between 10 and 999")
 
-            self.assertTrue(2 <= numbers.second <= numbers.first,
-                            f"{test_num}.3 the second number must be between 2 and {numbers.first}")
+            self.assertTrue(10 <= numbers.second <= 99,
+                            f"{test_num}.3 the divisor has to be between 10 and 99: {numbers.second} given")
+
+            self.assertTrue(numbers.second <= numbers.first,
+                            f"{test_num}.4 the dividend has to be greater than the divisor: {numbers} given.")
 
             # calculate the result expected
             quotient = numbers.first // numbers.second
@@ -360,18 +366,18 @@ class OperatorStrategyTest(unittest.TestCase):
                               py_ov.MultiplicationValidator)
 
         # testing simple division strategy
-        self.assertIn(py_os.SIMPLE_DIV_OPERATOR_KEY, py_os.STRATEGIES)
-        simple_div_strategy = py_os.STRATEGIES[py_os.SIMPLE_DIV_OPERATOR_KEY]
+        self.assertIn(py_os.SINGLE_DIV_OPERATOR_KEY, py_os.STRATEGIES)
+        simple_div_strategy = py_os.STRATEGIES[py_os.SINGLE_DIV_OPERATOR_KEY]
         self.assertIsInstance(simple_div_strategy,
-                              py_os.SimpleDivisionStrategy)
+                              py_os.SingleDivisorStrategy)
         self.assertIsInstance(simple_div_strategy.get_validator(),
                               py_ov.DivisionValidator)
 
         # testing complex division strategy
-        self.assertIn(py_os.COMPLEX_DIV_OPERATOR_KEY, py_os.STRATEGIES)
-        complex_div_strategy = py_os.STRATEGIES[py_os.COMPLEX_DIV_OPERATOR_KEY]
+        self.assertIn(py_os.DOUBLE_DIV_OPERATOR_KEY, py_os.STRATEGIES)
+        complex_div_strategy = py_os.STRATEGIES[py_os.DOUBLE_DIV_OPERATOR_KEY]
         self.assertIsInstance(complex_div_strategy,
-                              py_os.ComplexDivisionStrategy)
+                              py_os.DoubleDivisorStrategy)
         self.assertIsInstance(complex_div_strategy.get_validator(),
                               py_ov.DivisionValidator)
 

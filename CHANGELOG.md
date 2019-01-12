@@ -2,8 +2,8 @@
 
 ## 3.1.0 RC-1 (2019-01-11)
 
-- Add simple division strategy
-- Add complex division strategy
+- Add single divisor strategy
+- Add double divisor strategy
 - Add time addition strategy
 - Add time substraction strategy
 - Fix simple mutiplication strategy
