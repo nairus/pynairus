@@ -6,7 +6,8 @@ import unittest
 import logging
 from pathlib import Path
 import pynairus.config.app_config as py_ac
-from pynairus.errors.app_error import BadArgmentsError
+from pynairus.errors.app_error import BadArgumentError
+
 
 LOG_FILE_PATH = Path("pynairus/logs/pymath.default.log")
 TEST_DEBUG = "Test DEBUG"
@@ -38,8 +39,8 @@ class AppConfigTest(unittest.TestCase):
     def test_contructor(self):
         """Test the constructor of AppConfig class."""
         with self.assertRaises(
-                BadArgmentsError,
-                msg="1. The class must raise an [BadArgmentsError] exception"):
+                BadArgumentError,
+                msg="1. The class must raise an [BadArgumentError] exception"):
             py_ac.AppConfig(None)
 
         app_config = py_ac.AppConfig(logging.getLogger())
@@ -65,7 +66,7 @@ class AppConfigTest(unittest.TestCase):
             py_ac.AppConfig(logging.getLogger(), clear_onstart="false")
 
     def test_logger_setter(self):
-        with self.assertRaises(BadArgmentsError):
+        with self.assertRaises(BadArgumentError):
             app_config = py_ac.AppConfig(logging.getLogger())
             app_config.logger = None
 
@@ -241,13 +242,13 @@ class AppConfigTest(unittest.TestCase):
 
     def test_error_log(self):
         """Test error log with exception raised."""
-        with self.assertRaises(BadArgmentsError,
+        with self.assertRaises(BadArgumentError,
                                msg="1. The function must raise a \
-                               [BadArgmentsError]"):
+                               [BadArgumentError]"):
             app_config = py_ac.parse_yml(
                 "tests/config/app_config.yml.good.dist")
             logger = app_config.logger
-            logger.error(TEST_ERROR, BadArgmentsError("Args Error"))
+            logger.error(TEST_ERROR, BadArgumentError("Args Error"))
 
         # free the resource for the other tests
         logger.close()
@@ -259,13 +260,13 @@ class AppConfigTest(unittest.TestCase):
 
     def test_critical_log(self):
         """Test critical log with exception raises."""
-        with self.assertRaises(BadArgmentsError,
+        with self.assertRaises(BadArgumentError,
                                msg="1. The function must raise a \
-                               [BadArgmentsError]"):
+                               [BadArgumentError]"):
             app_config = py_ac.parse_yml(
                 "tests/config/app_config.yml.good.dist")
             logger = app_config.logger
-            logger.critical(TEST_CRITICAL, BadArgmentsError("Args Error"))
+            logger.critical(TEST_CRITICAL, BadArgumentError("Args Error"))
 
         # free the resource for the other tests
         logger.close()

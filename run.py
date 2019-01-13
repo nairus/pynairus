@@ -46,6 +46,6 @@ if __name__ == "__main__":
         from pynairus.pymath import pymath
         pymath(start=ARGS.start, end=ARGS.end, limit=ARGS.limit,
                operator=ARGS.operator, timer=ARGS.timer, config=ARGS.config)
-    except err.BadArgmentsError as exc:
+    except err.BadArgumentError as exc:
         print("An error occured, please see the log!")
         ns_os.display_operators_list()

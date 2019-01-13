@@ -26,14 +26,14 @@ class TestPymathIsAlreadyAnswered(unittest.TestCase):
     def test_not_exists(self):
         """Not exist test."""
         self.assertFalse(is_already_answered((1, 2, '+')),
-                         msg=f"the tuple (1, 2, '+') must exist in the answers.")
+                         msg="the tuple (1, 2, '+') musts not exist.")
 
     def test_exists_and_true(self):
         """Testing if the right anwser exists."""
         self.assertTrue(is_already_answered(GOOD_ANSWER),
-                        msg=f"the tuple {GOOD_ANSWER} must exist and be True.")
+                        f"the tuple {GOOD_ANSWER} musts exist and be True.")
 
     def test_exists_and_false(self):
         """Testing if the wrong answer exists."""
         self.assertFalse(is_already_answered(BAD_ANSWER),
-                         msg=f"the tuple {BAD_ANSWER} must exist and be False.")
+                         f"the tuple {BAD_ANSWER} musts exist and be False.")
