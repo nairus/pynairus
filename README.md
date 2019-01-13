@@ -49,13 +49,22 @@ You can also run the application by importing the lib like:
 from pynairus import pymath
 
 # for multiplication tables
-pymath.pymath(start=3, end=5, limit=10, operator="*")
+pymath.pymath(start=3, end=5, limit=10, operator="×")
 
 # for multiplication with 1 digit factor
-pymath.pymath(start=10, end=999, limit=10, operator="1*")
+pymath.pymath(start=10, end=999, limit=10, operator="1×")
 
 # for multiplication with multiple digit factor
-pymath.pymath(start=10, end=999, limit=10, operator="n*")
+pymath.pymath(start=10, end=999, limit=10, operator="n×")
+
+# for euclidian division with single divisor
+pymath.pymath(start=10, end=99, limit=10, operator="÷")
+
+# for euclidian division with double divisor
+pymath.pymath(start=10, end=99, limit=10, operator="2÷")
+
+# for time addition: generate times between 20 minutes and 1 hour
+pymath.pymath(start=1200, end=3600, limit=5, operator="t+")
 ```
 
 The `start`, `end` and `limit` args are required. Exception will be raises if there are not present or if there not an `int`.
@@ -64,6 +73,22 @@ The other args are optionals:
 1. `operator`: specify an operator, by default a tuple of ('+', '-') is set.
 2. `timer`: launch a timer during the execution of the application. The total time is output at the end of the excecution.
 3. `config`: specify a config name. For example in production we don't want debug log. So you can define a production config and specify it with this arg.
+
+#### Euclidian divisions
+
+The expected result has to be formatted like: `{quotian}r[rest}`.  
+The rest is not required if the result has no one.
+
+- **Example 1 :** 12 ÷ 6 = 2
+- **Example 2 :** 13 ÷ 6 = 2r1
+
+#### Time operations
+
+For time addition and substraction, the result expected has to be formatted like: `{h}h{mm}m{ss}`.  
+_Beware to add missing `0` digits for the minutes and the seconds._
+
+- **Example 1:** 34m02s + 38m07s = 1h12m09s
+- **Example 2:** 38m07s - 34m02s = 04m05s
 
 ### OPERATORS AVAILABLE
 

@@ -1,12 +1,13 @@
 # PYMATH CHANGELOG
 
-## 3.1.0 RC-1 (2019-01-11)
+## 3.1.0 (2019-01-13)
 
 - Add single divisor strategy
 - Add double divisor strategy
 - Add time addition strategy
 - Add time substraction strategy
 - Fix simple mutiplication strategy
+- Change multiplication operators with `×` character.
 
 ## 3.0.0 (2018-03-23)
 
