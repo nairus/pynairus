@@ -28,7 +28,7 @@ def is_already_answered(numbers):
 
 
 def generate_random(start, end, operator):
-    """"
+    """
     Generate ramdom number.
         :param start:    Start range.
         :param end:      End range.
@@ -38,7 +38,7 @@ def generate_random(start, end, operator):
         :type end:       int
         :type operator:  str
 
-        :return ComputeNumbers
+        :return: ComputeNumbers
     """
     if operator not in ns_os.STRATEGIES:
         raise BadArgumentError(f"the operator {operator} not exists")
@@ -71,7 +71,7 @@ def pymath(**kwargs):
     timer = app_context.options.get("timer")
     operator = app_context.options.get("operator")
 
-    # we clear the awnsers dict
+    # we clear the answers dict
     ANSWERS.clear()
 
     if timer is True:
@@ -127,7 +127,7 @@ def pymath(**kwargs):
                 ANSWERS[answer_key] = True
             else:
                 ANSWERS[answer_key] = False
-                print(f"Mauvaise réponse, le résulat attendue est: {result}")
+                print(f"Mauvaise réponse, le résultat attendu est: {result}")
         except ValueError as identifier:
             # log a warning to not stop the application.
             logger.warning(f"Input error: {identifier}")
@@ -139,3 +139,62 @@ def pymath(**kwargs):
     if timer is True:
         logger.info(f"total time: {total_time:04.2f}")
         print(f"Temps de réponse total : {total_time:04.2f}")
+
+
+def report(**kwargs):
+    """
+    Print a report for external exercices.
+        keys required:
+            - start: start range (int).
+            - end:   end range (int).
+            - limit: max operations to generate (int).
+
+        keys optionals:
+            - operator:  operator (str).
+            - config:    the name the config file (str).
+    """
+    # init the context
+    app_context = ns_ac.init_app_context(**kwargs)
+    logger = app_context.app_config.logger
+
+    # init vars
+    start = app_context.start
+    end = app_context.end
+    limit = app_context.limit
+    operator = app_context.options.get("operator")
+
+    # we clear the answers dict
+    ANSWERS.clear()
+
+    # by default we build a tuple of addition and substraction operations
+    if operator is None:
+        operators = (ns_os.ADD_OPERATOR_KEY, ns_os.SUB_OPERATOR_KEY)
+    else:
+        operators = (operator, operator)
+
+    numbers_operations = []
+    try:
+        numbers_operations = [generate_random(
+            start, end, operators[x % 2]) for x in range(limit)]
+
+        logger.debug(f"numbers_operations generated: {numbers_operations}")
+    except BadArgumentError as identifier:
+        logger.error("An error occured during operation generation",
+                     identifier)
+
+    for numbers in numbers_operations:
+        # we generate the key for the answer
+        answer_key = (numbers.first, numbers.second, numbers.operator)
+
+        # loop until we found an good anwser not already given
+        while is_already_answered(answer_key):
+            logger.debug(f"key {answer_key} already exists.")
+            # generate another operation
+            numbers = generate_random(start, end, numbers.operator)
+            # we create another answer key
+            answer_key = (numbers.first, numbers.second, numbers.operator)
+
+        print(f"{numbers}")
+        result = numbers.get_good_result()
+        print(f"Le résultat attendu est: {result}")
+        print("")

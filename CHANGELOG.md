@@ -1,5 +1,14 @@
 # PYMATH CHANGELOG
 
+## 3.2.0 (2020-06-xx)
+
+- Add decimal multiplication
+- Add simple integer divisor
+- Add double integer divisor
+- Add simple decimal divisor
+- Add double decimal divisor
+- Add report for external exercices
+
 ## 3.1.0 (2019-01-13)
 
 - Add single divisor strategy

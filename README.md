@@ -23,7 +23,7 @@ python run.py -h
 It will output:
 
 ```bash
-usage: run.py [-h] [-o OPERATOR] [-t] [-l] [-c CONFIG] [-V] start end limit
+usage: run.py [-h] [-o OPERATOR] [-t] [-l] [-c CONFIG] [-V] [-r] start end limit
 
 positional arguments:
   start                 Start of the random range

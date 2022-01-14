@@ -37,15 +37,21 @@ if __name__ == "__main__":
                         help="Specify a config name")
     PARSER.add_argument("-V", "--version", action=VersionAction,
                         help="Display the current version and exit")
+    PARSER.add_argument("-r", "--report", action="store_true",
+                        help="Display the report for external usage")
 
     ARGS = PARSER.parse_args()
 
     # we show the operators list
     try:
         # otherwise we launch the application
-        from pynairus.pymath import pymath
-        pymath(start=ARGS.start, end=ARGS.end, limit=ARGS.limit,
-               operator=ARGS.operator, timer=ARGS.timer, config=ARGS.config)
+        from pynairus.pymath import pymath, report
+        if not ARGS.report:
+            pymath(start=ARGS.start, end=ARGS.end, limit=ARGS.limit,
+                   operator=ARGS.operator, timer=ARGS.timer, config=ARGS.config)
+        else:
+            report(start=ARGS.start, end=ARGS.end, limit=ARGS.limit,
+                   operator=ARGS.operator, timer=ARGS.timer, config=ARGS.config)
     except err.BadArgumentError as exc:
         print("An error occured, please see the log!")
         ns_os.display_operators_list()
